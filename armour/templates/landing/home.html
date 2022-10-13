@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block js %}
+ {{ block.super }}
+
+   <script src="{% static 'js/jquery.form.min.js' %}"></script>
+   <script src="{% static 'js/home.js' %}"></script>
+
+   <script type="text/javascript">
+        var urls = {
+            contact: "{% url 'contact-form' %}",
+        };
+        $(document).ready(function() {
+            loadContact();
+        });
+    </script>
+
+
+{% endblock js %}
+
+{% block content %}
+  <!-- Main content -->
+<main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container">
+                <img class="img img-responsive" src="{% static '/images/mockup-laptop-2.png' %}">
+                <div class="hero-content clearfix">
+                    <h1>Legislation <br> made effortless</h1>
+                    <a class="btn btn-secondary btn-lg scroll-link" href="#contact-section">Register Your Interest</a>
+                </div>
+            </div>
+        </section>
+        <!-- Coming soon -->
+        <section class="bg-dark" id="what-is-section">
+            <div class="container">
+                <h2 class="section-title">Product <strong>Coming Soon</strong></h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 icon-shield-wrapper">
+                        <object class="icon-shield" type="image/svg+xml" data="{% static '/images/shield-1.svg' %}">
+                            <img src="{% static '/images/shield-1.svg' %}" alt="Armour">
+                        </object>
+                        <h3>Health & Safety</h3>
+                    </div>
+                    <div class="col-md-4 col-sm-12 icon-shield-wrapper">
+                        <object class="icon-shield" type="image/svg+xml" data="{% static '/images/shield-2.svg' %}">
+                            <img src="{% static '/images/shield-2.svg' %}" alt="Armour">
+                        </object>
+                        <h3>Human Resources</h3>
+                    </div>
+                    <div class="col-md-4 col-sm-12 icon-shield-wrapper">
+                        <object class="icon-shield" type="image/svg+xml" data="{% static '/images/shield-3.svg' %}">
+                            <img src="{% static '/images/shield-3.svg' %}" alt="Armour">
+                        </object>
+                        <h3>Environmental</h3>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-outline-light btn-xl btn-round scroll-link mt-5" href="#contact-section">Register Your Interest</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coming soon -->
+        <section class="bg-light" id="features-section">
+            <div class="container">
+                <h2 class="section-title">Product <strong>Features</strong></h2>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-12 icon-feature-wrapper">
+                        <div class="icon-feature">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_identify.svg' %}">
+                                <img src="{% static '/images/icon_identify.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Identify & Simplify</h3>
+                        <p>Identifies legislation applicable to your company in minutes. Contains no legal jargon, simple key fact statements, no fuss, effortless.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 icon-feature-wrapper">
+                        <div class="icon-feature">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_audit.svg' %}">
+                                <img src="{% static '/images/icon_audit.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Audit</h3>
+                        <p>Conduct audit and determine gaps.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 icon-feature-wrapper">
+                        <div class="icon-feature">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_action.svg' %}">
+                                <img src="{% static '/images/icon_action.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Action</h3>
+                        <p>Not compliant? No problem, assign actions to personnel and monitor progress.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 icon-feature-wrapper">
+                        <div class="icon-feature">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_review.svg' %}">
+                                <img src="{% static '/images/icon_review.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Review and Update</h3>
+                        <p>Access legal information 24 hrs per day, 365 days of year via the cloud in real time. When the law changes, we’ll let you know.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Designed for -->
+        <section class="bg-dark">
+            <div class="container">
+                <h2 class="section-title">Designed for <strong>Companies & Consultants</strong></h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 icon-circle-wrapper dark">
+                        <div class="icon-circle">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_cloud.svg' %}">
+                                <img src="{% static '/images/icon_cloud.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>In the Cloud</h3>
+                    </div>
+                    <div class="col-md-4 col-sm-12 icon-circle-wrapper dark">
+                        <div class="icon-circle">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_secure.svg' %}">
+                                <img src="{% static '/images/icon_secure.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Secure</h3>
+                    </div>
+                    <div class="col-md-4 col-sm-12 icon-circle-wrapper dark">
+                        <div class="icon-circle">
+                            <object class="icon" type="image/svg+xml" data="{% static '/images/icon_easy_to_use.svg' %}">
+                                <img src="{% static '/images/icon_easy_to_use.svg' %}" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Easy to Use</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="bg-light" id="pricing-section">
+            <div class="container">
+                <h2 class="section-title">Product <strong>Pricing</strong></h2>
+                <h4 class="text-center">Starting from <strong>£tbc</strong> per month up to 5 users.</h4>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary btn-lg scroll-link mt-5" href="#contact-section">Register Your Interest</a>
+                </div>
+        </section>
+
+        <!-- Team -->
+        <section  id="team-section">
+            <div class="container">
+                <h2 class="section-title">Our <strong>Team</strong></h2>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 icon-circle-wrapper">
+                        <div class="icon-circle">
+                            <object class="icon" type="image/svg+xml" data="static/images/icon_charlene.svg">
+                                <img src="static/images/icon_charlene.svg" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Charlene Armour <small>Founder CEO of Operation Armour</small></h3>
+                    </div>
+                    <div class="col-md-6 col-sm-12 icon-circle-wrapper">
+                        <div class="icon-circle">
+                            <object class="icon" type="image/svg+xml" data="static/images/icon_milo.svg">
+                                <img src="static/images/icon_milo.svg" alt="Armour">
+                            </object>
+                        </div>
+                        <h3>Milo Solutions <small>Technology Partner</small></h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="bg-light"  id="contact-section"></section>
+    </main>
+
+{% endblock content %}

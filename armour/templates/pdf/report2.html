@@ -1,0 +1,259 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ISO Product Report</title>
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Source+Sans+Pro:400,600&display=swap" rel="stylesheet">
+  <!-- styles -->
+  {% include 'pdf/base_styles.html' %}
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td>
+        {% if object.company.image %}
+        <img class="company-logo" src="{{object.company.image.path}}" alt="{{ object.company.name }}">
+        {% endif %}
+      </td>
+      <td class="text-right">
+        <span class="text-muted">Time Generated:</span>
+        <p>{% now "d.m.Y, H:i" %}</p>
+      </td>
+    </tr>
+  </table>
+
+  <h1>Legal Register Report</h1>
+
+  <table>
+    <tr>
+      <th class="text-left" style="width: 50%">
+        <h4>{{ object.company.name|safe|title }}{% if object.company.scope %} <small>Organisational scope:</small>{% endif %}</h4>
+      </th>
+      <th class="text-right" style="width:50%">
+        <h4> {{user.get_fullname }}</h4>
+      </th>
+    </tr>
+    {% if object.company.scope %}
+    <tr>
+      <th colspan="2" class="text-left">
+        <p class="text-info">{{ object.company.scope|safe }}</p>
+      </th>
+    </tr>
+    {% endif %}
+  </table>
+
+  <h5>No of NCs: <strong>{{ object.get_ncs_cnt }}</strong></h5>
+
+  <h6>Report information</h6>
+  <table class="table-striped">
+    <tr>
+      <td class="text-color"><strong>Report Name</strong></td>
+      <td>Legal Register {{ object.started|date:"F Y" }}</td>
+      <td class="text-color"><strong>Date</strong></td>
+      <td>{{ object.started|date:"d.m.Y" }}</td>
+    </tr>
+    <tr>
+      <td class="text-color"><strong>Topic(s)</strong></td>
+      <td>
+        {% for t in object.get_topics %}
+        <p>{{ t.name|title }}</p>
+        {% endfor %}
+      </td>
+      <td class="text-color"><strong>Location(s)</strong></td>
+      <td>
+        {% for t in object.get_locations %}
+        <p>{{ t.name|title }}</p>
+        {% endfor %}
+      </td>
+    </tr>
+    <tr>
+      <td class="text-color"><strong>Status</strong></td>
+      <td>Full Compliance Report</td>
+      <td class="text-color"><strong>Review date</strong></td>
+      <td>{{ object.get_reviev_date|date:"d.m.Y" }}</td>
+    </tr>
+  </table>
+
+  {% for pos in positions %}
+  <h6>Legislation list: {{ pos.topic.name|title }}, {{ pos.location.name|title }}</h6>
+  <table class="table-striped">
+    <thead>
+      <tr>
+        <th style="width:75%">Action item</th>
+        <th style="width:10%">Review date</th>
+        <th style="width:15%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for res in pos.get_nonpositions %}
+      <tr>
+        <td>{{ res.isostandard.title|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+    </tr>
+      {% endfor %}
+      {% for res in pos.get_incpositions %}
+      <tr>
+        <td>{{ res.isostandard.title|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+    </tr>
+      {% endfor %}
+      {% for res in pos.get_emptyp %}
+      <tr>
+        <td>{{ res.title|safe }}</td>
+        <td>{% now "d.m.Y" %}</td>
+        <td><img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete"> <span class="status">Incomplete<span></td>
+      </tr>
+      {% endfor %}
+      {% for res in pos.get_fullpositions %}
+      <tr>
+        <td>{{ res.isostandard.title|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+
+  {% if others|length > 0%}
+  <h6>Other requirements</h6>
+  {% for pos in others %}
+  <table class="table-striped">
+    <thead>
+      <tr>
+        <th style="width:75%">Action item</th>
+        <th style="width:10%">Review date</th>
+        <th style="width:15%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tbody>
+      {% for res in pos.get_nonpositions %}
+      <tr>
+        <td>{{ res.req.name|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+      </tr>
+      {% endfor %}
+      {% for res in pos.get_incpositions %}
+      <tr>
+        <td>{{ res.req.name|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+      </tr>
+      {% endfor %}
+      {% for res in pos.get_emptyp %}
+      <tr>
+        <td>{{ res.name|safe }}</td>
+        <td>{% now "d.m.Y" %}</td>
+        <td><img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete"> <span class="status">Incomplete<span></td>
+      </tr>
+      {% endfor %}
+      {% for res in pos.get_fullpositions %}
+      <tr>
+        <td>{{res.req.name|safe }}</td>
+        <td>{{ res.updated|date:"d.m.Y" }}</td>
+        <td>
+            {% if res.get_status_display == "No Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_noncompliance.png" alt="No Compliance">
+            {% elif res.get_status_display == "Full Compliance" %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_complete.png" alt="Full Compliance">
+            {% elif res.get_status_display == "Incomplete"  %}
+            <img class="icon" src="{{ staticroot }}/images/icons/pdf_incomplete.png" alt="Incomplete">
+            {% endif %}
+            <span class="status">{{ res.get_status_display }}<span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+
+
+  {% endif %}
+  {% if ncs|length > 0 and 1 ==   0 %}
+  <h6>Non conformance & Corrective Actions</h6>
+  <table class="table-striped">
+    <thead>
+      <tr>
+        <th style="width:15%">Source</th>
+        <th style="width:50%">Action item</th>
+        <th style="width:10%">Date raised</th>
+        <th style="width:10%">Status</th>
+        <th style="width:15%">Assigned to</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for n in ncs %}
+      <tr>
+        <td>{% if not n.source and n.nctype == 'inner' %}Legal Register{% else %}{{ n.source.name }}{% endif %}</td>
+        <td>No Compliance with {{ n.point|safe }}</td>
+        <td>{{ n.updated|date:"d.m.Y" }}</td>
+        <td>{% if n.verify %}Close{% else %}Open{% endif %}</td>
+        <td>{% if n.assign %}{{ n.assign.get_fullname }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  <table>
+    <tr>
+      <td align="center" style="padding-top: 20px">
+        Powered by
+        <img class="logo" src="{{ staticroot }}/images/logo-main.svg" alt="Armour">
+      </td>
+    </tr>
+  </table>
+</body>

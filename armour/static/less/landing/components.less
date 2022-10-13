@@ -1,0 +1,125 @@
+// main: ../styles.less
+
+.icon-shield-wrapper {
+	margin-bottom: 40px;
+	text-align: center;
+	.icon-shield {
+		display: inline-block;
+		height: 160px;
+		width: auto;
+		vertical-align: middle;
+	}
+	h3 {
+		font-family: 'Source Sans Pro', sans-serif;
+		display: inline-block;
+		font-size: 24px;
+		vertical-align: middle;
+		margin: 20px 0 0 20px;
+	}
+}
+
+.icon-feature-wrapper {
+	margin-bottom: 40px;
+	text-align: center;
+	.icon-feature {
+		display: block;
+		height: 140px;
+		width: 140px;
+		margin: 0 auto;
+		border-radius: 50%;
+		border: 5px solid darken(@brand-bg-dark,5%);
+		.icon {
+			display: block;
+			margin: 15px auto;
+			height: 100px;
+			width: 100px;
+		}
+	}
+	h3 {
+		font-family: 'Source Sans Pro', sans-serif;
+		display: block;
+		font-size: 24px;
+		font-weight: 600;
+		margin: 40px 0 20px;
+	}
+	p {
+		font-size: 16px;
+		line-height: 1.6;
+	}
+}
+
+.icon-circle-wrapper {
+	margin-bottom: 40px;
+	text-align: center;
+	.icon-circle {
+		display: inline-block;
+		vertical-align: middle;
+		height: 120px;
+		width: 120px;
+		border-radius: 50%;
+		border: 5px solid darken(@brand-bg-dark,5%);
+		.icon {
+			display: block;
+			margin: 15px auto;
+			height: 80px;
+			width: 80px;
+		}
+	}
+	h3 {
+		font-family: 'Source Sans Pro', sans-serif;
+		display: inline-block;
+		font-size: 24px;
+		font-weight: 600;
+		vertical-align: middle;
+		text-align: left;
+		margin: 20px;
+		small {
+			display: block;
+			font-size: 16px;
+			margin-top: 5px;
+			font-weight: 400;
+		}
+	}
+	&.dark {
+		.icon-circle {
+			border-color: @brand-secondary;
+		}
+		h3 {
+			font-weight: 400;
+		}
+	}
+}
+
+@media (max-width: 1199px) {
+	.icon-shield-wrapper {
+		h3 {
+			display: block;
+			margin: 20px;
+		}
+	}
+}
+
+@media (max-width: 991px) {
+	.icon-feature-wrapper {
+		margin-bottom: 60px;
+		h3 {
+			margin: 20px 0;
+		}
+	}
+	.icon-circle-wrapper {
+		h3 {
+			display: block;
+			margin: 20px;
+			text-align: center;
+		}
+	}
+}
+
+@media (max-width: 767px) {
+	.icon-shield-wrapper, .icon-feature-wrapper, .icon-circle-wrapper {
+		margin-bottom: 60px;
+		.btn-xl {
+			font-size: 24px;
+		}
+	}
+}

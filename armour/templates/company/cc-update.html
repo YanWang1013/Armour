@@ -1,0 +1,206 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Payment and Billing{% endblock %}
+
+{% block pagetitle %}Payment and Billing{% endblock %}
+
+{% block content %}
+     <form method="post" action="{% url 'discount-set' %}">
+     {% csrf_token %}
+        <div class="row">
+        <div class="col-md-6">
+            <div class="card box">
+                <h5 class="card-title">Price information</h5>
+                <div class="form-group">
+                    {% if price <= 0 %}
+                    <p class="price-info">All your products are paid.</p>
+                    {% else %}
+                    <p class="price-info">Your price is <strong data-toggle="tooltip" data-html="true" title="<div class='price-details'><span>Net:</span> {{price|floatformat:2}} {{company.currency}} <hr/><span>Discount:</span> {{discount|floatformat:2}} {{company.currency}} <hr/><span>Subtotal:</span> {{subtotal|floatformat:2}} {{company.currency}} <hr/> <span>VAT:</span> {{tax|floatformat:2}} {{company.currency}} <hr/> <span>Total:</span> {{total|floatformat:2}} {{company.currency}}</div>">{{total|floatformat:2}} {{company.currency}}  <i class="fas fa-info-circle"></i></strong> per year.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if price > 0 %}
+        <div class="col-md-6">
+            <div class="card box">
+                <h5 class="card-title">Discount code</h5>
+                <div class="form-inline">
+                  <div class="form-group">
+                    <label for="discount-code" class="sr-only">Code</label>
+                    <input type="text" class="form-control" name="discount-code" placeholder="Code" required {% if code %}value="{{ code }}{% endif %}">
+                  </div>
+                  <button type="submit" class="btn btn-primary ml-2"><i class="fas mr-2 {% if code %}fa-trash{% else  %}fa-plus{% endif %}"></i>{% if code %}Remove{% else  %}Add{% endif %}</button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    </form>
+
+    <form method="post" id="cc-card" action="{% url 'cc-update' %}">
+        {{form.media}}
+    {% csrf_token %}
+        <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="card box">
+                <h5 class="card-title">Payment Method</h5>
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.card_num.label}}</label>
+                            {% for error in form.card_num.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.card_num}}
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.card_code.label}}</label>
+                            {% for error in form.card_code.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.card_code}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.month_expires.label}}</label>
+                            {% for error in form.month_expires.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.month_expires}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.year_expires.label}}</label>
+                            {% for error in form.year_expires.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.year_expires}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.fname.label}}</label>
+                            {% for error in form.fname.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.fname}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.lname.label}}</label>
+                            {% for error in form.lname.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.lname}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.email.label}}</label>
+                            {% for error in form.email.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.email}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div class="card box">
+                <h5 class="card-title">Billing company info</h5>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.name.label}}</label>
+                            {% for error in form.name.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.name}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.billstreet.label}}</label>
+                            <div class="input-group-append">
+                                {{form.billstreet}}
+                                <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.billzipcode.label}}</label>
+                            {{form.billzipcode}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.billcity.label}}</label>
+                            {{form.billcity}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.billcountry.label}}</label>
+                            {{form.billcountry}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.currency.label}}</label>
+                            {{form.currency}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            <div class="card box">
+                <div class="action-btns">
+                    {% if object.check_valid_payment %}
+                    <a href="{% url 'subscription' %}" class="btn btn-blank btn-lg"><i class="fas fa-angle-double-right mr-3"></i> Continue Your Access</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary btn-lg" onclick="beforeSubmit();"><i class="fas fa-credit-card mr-3"></i> Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{form.card_token}}
+    </form>
+{% endblock content %}
+
+{% block js %}
+{{ block.super }}
+<script src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+    var STRIPE_KEY = '{{TOKEN_KEY}}';
+</script>
+<script src="{% static 'js/cc-card.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip({
+            container: 'body',
+            placement: 'top',
+            boundary: 'viewport'
+        })
+    });
+</script>
+{% endblock %}

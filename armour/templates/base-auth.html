@@ -1,0 +1,147 @@
+{% load static i18n %}
+<!doctype html>
+
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    {% block meta %}
+    <meta charset="utf-8">
+
+    <meta name="description" content="UPDATE HERE">
+    <meta name="keywords" content="Armour">
+    <meta name="author" content="Armour">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- OG data -->
+    <meta property="og:title" content="Armour">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://www.DOMAIN.com">
+    <meta property="og:image" content="http://www.DOMAIN.com/{% static 'images/og-image.jpg' %}">
+    <meta property="og:description" content="UPDATE HERE">
+    {% endblock meta %}
+
+    {% block icons %}
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#003f5b">
+    <meta name="application-name" content="Armour">
+    <meta name="msapplication-TileColor" content="#003f5b">
+    <meta name="theme-color" content="#ffffff">
+    {% endblock icons %}
+
+    {% block css %}
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Source+Sans+Pro:300,400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app_styles.css' %}">
+    {% endblock css %}
+
+    {% block js %}
+    <!-- jQuery 3.3.1 -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/csrf_middleware.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Vendor -->
+    <script src="{% static 'js/perfect-scrollbar.min.js' %}"></script>
+
+    <!-- Site script -->
+    <script src="{% static 'js/app.js' %}"></script>
+    {% if messages %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                addAlert("danger", "Verification error", "{{ message|safe }}");
+                {% else %}
+                addAlert("success", "Success", "{{ message|safe }}");
+                {% endif %}
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
+    {% if BLOCK_SOURCE %}
+    <script type="text/javascript">
+        function disableBack() {window.history.forward()}
+
+        $(document).ready(function(){
+            $('body').bind('contextmenu cut drag drop selectstart', function (e) {
+                e.preventDefault();
+            });
+
+            window.onload = disableBack();
+            window.onpageshow = function (evt) {if (evt.persisted) disableBack()}
+
+            delete window.console;
+
+            $(window).keyup(function(e){
+
+                if(e.keyCode == 44) return false;
+            });
+
+        });
+
+    </script>
+    {% endif %}
+    {% endblock js %}
+</head>
+
+<body class="sidebar-open">
+
+
+    {% block modal %}
+    {% endblock modal %}
+
+    {% block menu %}
+    <!-- navbar -->
+    {% include 'common/navbar.html' %}
+    <!-- sidebar -->
+    {% include 'common/sidebar.html' %}
+    {% endblock menu %}
+
+    <!-- Alerts wrapper -->
+    <div class="alerts"></div>
+
+    {% block wrapper %}
+    <!-- Main content -->
+    <div class="page-content">
+        <div class="container-fluid">
+            <header class="clearfix">
+                {% block header %}
+                    <h1 class="page-title">{% block pagetitle %}{% endblock %}</h1>
+                    <ul class="breadcrumb">{% block breadcrumb %}{% endblock %}</ul>
+                    <div class="head-form-group">{% block headeractions %}{% endblock %}</div>
+                {% endblock %}
+            </header>
+        {% block content %}{% endblock content %}
+        </div>
+    </div>
+    {% endblock wrapper %}
+</div>
+
+
+{% block extrajs %}{% endblock %}
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/5eb42dcc81d25c0e5849c1d6/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

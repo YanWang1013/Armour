@@ -1,0 +1,26 @@
+{% extends "user/base-login.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Profile Builder{% endblock %}
+
+{% block pagetitle %}Profile Builder <small>Finished</small>{% endblock %}
+
+{% block content %}
+<div class="card box">
+  <div class="row justify-content-center box-hero">
+      <div class="col-md-6 col-sm-12">
+          <div class="hero-message">
+              <i class="far fa-check-circle text-secondary"></i>
+              <h2>Success</h2>
+              <p class="text-secondary">Great, your profile has been created, time to build your register!</p>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="card box">
+    <div class="action-btns">
+        <a href="{% url 'organization-update' %}" class="btn btn-blank btn-lg float-left"><i class="far fa-edit mr-3"></i> Edit data</a>
+        <a href="{% url 'iso-standards' %}" class="btn btn-primary btn-lg"><i class="fas fa-folder-open mr-3"></i> Go to my ISO</a>
+    </div>
+</div>
+{% endblock content %}

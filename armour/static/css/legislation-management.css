@@ -1,0 +1,64 @@
+
+ div.item-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+div.item-wrap {
+    margin-right: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    min-height: 120px;
+}
+
+div.item-wrap > div.img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+}
+
+
+div.item-wrap > span.fas {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    font-size: 1rem;
+    z-index: 9;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
+
+.context-menu {
+    padding-left: 10px;
+}
+.context-menu li {
+   margin: 5px 5px 5px 0;
+}
+.context-menu li.divider {
+    width: 90%;
+    height: 1px;
+    background: #55555533;
+}
+.context-menu li a {
+    cursor: pointer;
+}
+.context-menu li a:hover {
+    font-weight: bold;
+}
+div.item-wrap > div.txt {
+    font-size: 1.5em;
+    color: #555555;
+    overflow: hidden;
+    width: 100px;
+    text-overflow: ellipsis;
+    text-align: center;
+    flex-grow: 1;
+}

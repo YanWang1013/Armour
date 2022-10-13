@@ -1,0 +1,149 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags humanize static %}
+
+{% block title %}
+Subscription
+{% endblock title %}
+
+{% block pagetitle %}
+Subscription
+{% endblock pagetitle %}
+
+{% block content %}
+<!-- subscription -->
+<div class="row">
+    <!-- details -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box with-footer">
+            <div class="box-body">
+                <div class="row justify-content-center box-hero">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="hero-message">
+                            <i class="far fa-credit-card"></i>
+                            <h2>Your current plans</h2>
+                            <div class="table-responsive">
+                                <table class="table table-plans">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col" class="text-right">Paid</th>
+                                            <th scope="col" class="text-right">Valid</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for e in object.gen_price_pos %}
+                                        <tr>
+                                            <td>{{ e.location.name|safe }}, {{ e.topic.name|safe }}</td>
+                                            <td class="text-right">
+                                                {% if e.free %}
+                                                    <span class="plan-paid text-primary"><i class="fas fa-check mr-1"></i> Free </span>
+                                                {% elif e.paid %}
+                                                    <span class="plan-paid text-primary"><i class="fas fa-check mr-1"></i> Yes</span>
+                                                {% else %}
+                                                    <span class="plan-paid text-danger"><i class="fas fa-times mr-1"></i>No</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-right">{{ e.valid|safe }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="action-btns">
+                    <button data-toggle="modal" data-target="#cancelModal" class="btn btn-blank-default btn-lg float-left"><i class="far fa-trash-alt mr-3"></i> Cancel plan</button>
+                    {% if object.check_valid_payment %}
+                        <a  class="btn btn-blank btn-lg" href="{% url 'iso-standards' %}"><i class="fas fa-angle-double-right mr-3"></i> Continue Your Access</a>
+                    {% endif %}
+                     {% if object.gen_price > 0 and  not object.free %}
+                    <a href="{% url 'cc-confirm' %}" class="btn btn-primary btn-lg"><i class="fas fa-credit-card mr-3"></i> Pay</a>
+                    {% endif %}
+                    {% if object.free %}
+                    <a href="{% url 'select-your-plan' %}" class="btn btn-primary btn-lg"><i class="fas fa-credit-card mr-3"></i> Subscribe to annual plan</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- billing -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box with-footer">
+            <div class="box-body">
+                <h5 class="card-title w-b mt-0">Billing history</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Order Number</th>
+                                <th scope="col">Type</th>
+                                <th scope="col" class="text-right">Price</th>
+                                <th scope="col" class="text-right">VAT</th>
+                                <th scope="col" class="text-right">Total</th>
+                                <th scope="col" style="width: 10%">Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pay in object.get_payments|slice:":4" %}
+                            <tr>
+                                <td>{{ pay.date|date:"d/m/Y" }}</td>
+                                <td>{{ pay.id|safe }}</td>
+                                <td>{% if pay.free %}Free Trial{% else %}Payment{% endif %}</td>
+                                <td class="text-right">{% if pay.free %}-{% else %}£{{ pay.price|floatformat:2|safe }}{% endif %}</td>
+                                <td class="text-right">{% if pay.free %}-{% else %}£{{ pay.tax|floatformat:2|safe }}{% endif %}</td>
+                                <td class="text-right">{% if pay.free %}-{% else %}£{{ pay.total|floatformat:2|safe }}{% endif %}</td>
+
+                                <td class="text-right">
+                                    {%  if pay.stripe_invoice_pdf %}
+                                        <a target="_blank" href="{{ pay.stripe_invoice_pdf }}" class="btn btn-blank-default btn-sm"><i class="fas fa-download mr-2"></i> Download</a>
+                                    {%  endif %}
+                                </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="action-btns">
+            <a href="{% url 'subscription-list' %}" class="btn btn-blank btn-lg"><i class="fas fa-receipt mr-3"></i> Show all</a>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{%  url 'subscription-cancel' %}" method="post" id="action-form">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Cancel subcriptions confirmation</h5>
+                    <button type="button" id="action-close" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This action will disable automatic extension and payment of the all your subscriptions. Are you sure want to delete?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-blank" data-dismiss="modal"><i class="fas fa-times mr-2"></i> Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-trash-alt mr-2"></i> Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}

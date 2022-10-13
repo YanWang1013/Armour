@@ -1,0 +1,25 @@
+// main: ../app_styles.less
+
+.tooltip {
+  .tooltip-inner {
+    padding: 8px 12px;
+    background: @brand-primary;
+    max-width: 600px;
+    .price-details {
+      text-align: left;
+      span {
+        display: inline-block;
+        width: 70px;
+      }
+      hr {
+        margin: 5px 0;
+        border-color: rgba(255,255,255,.2);
+      }
+    }
+  }
+  .arrow {
+    &:before {
+      border-top-color: @brand-primary;
+    }
+  }
+}

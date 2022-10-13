@@ -1,0 +1,25 @@
+{% extends "user/base-login.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Account Activation{% endblock %}
+
+{% block pagetitle %}Account Activation{% endblock %}
+
+{% block content %}
+<div class="card box">
+  <div class="row justify-content-center box-hero">
+      <div class="col-md-6 col-sm-12">
+          <div class="hero-message">
+              <i class="far fa-check-circle text-secondary"></i>
+              <h2>Success</h2>
+              <p class="text-secondary">An activation link has been sent to your email address!</p>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="card box">
+    <div class="action-btns">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i> Login</a>
+    </div>
+</div>
+{% endblock content %}

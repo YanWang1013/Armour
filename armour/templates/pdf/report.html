@@ -1,0 +1,106 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ISO Product Report</title>
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Source+Sans+Pro:400,600&display=swap"
+          rel="stylesheet">
+    <!-- styles -->
+    {% include 'pdf/base_styles.html' %}
+</head>
+
+<body>
+<h1 class="text-center">ISO “INSERT STANDARD” GAP REPORT</h1>
+<table>
+    <tr>
+        <td align="left"><h2>{{ product.company.name }}</h2></td>
+        <td align="right"><h2>ADMINISTRATOR ID/NAME</h2> </td>
+    </tr>
+</table>
+<h5>No of NCs: 5</h5>
+<h6>Report Information</h6>
+<table class="table table-striped">
+    <tr>
+        <td>Report Name</td>
+        <td>ISO “insert standard” Gap Report</td>
+        <td>Date:</td>
+        <td>2021/12/24 12:00</td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>Annual compliance review</td>
+        <td>Review date:</td>
+        <td>2022/12/24 12:00</td>
+    </tr>
+</table>
+<br><br>
+<h6>Requirements list:</h6>
+<table class="table table-striped">
+    <tr>
+        <th>Requirements (show title only)</th>
+        <th>Evidence</th>
+        <th>Review date</th>
+        <th>Compliance Status</th>
+    </tr>
+    <tr>
+        <td>4.1 Context of the organization</td>
+        <td>“This is the txt from audit notes/evidence section”
+
+            “List of uploaded documentation”
+        </td>
+        <td>05.09.19</td>
+        <td>Complaint</td>
+    </tr>
+    <tr>
+        <td>4.2 needs and expectations of interested parties</td>
+        <td></td>
+        <td>06.09.19</td>
+        <td>Non compliant</td>
+    </tr>
+    <tr>
+        <td>4.3 Scope</td>
+        <td></td>
+        <td>06.09.19</td>
+        <td>Incomplete</td>
+    </tr>
+</table>
+<br><br>
+<h6>Non conformances:</h6>
+<table class="table table-striped">
+    <tr>
+        <th>NC No:</th>
+        <th>equirement (same as req in report above – title only)</th>
+        <th>NC Description</th>
+        <th>Date raised</th>
+        <th>Root cause</th>
+        <th>Corrective action</th>
+        <th>Assigned to</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>4.1 Context of the organization</td>
+        <td>“Quality Policy is incomplete”</td>
+        <td>“Date when NC was created in ISO register”
+
+            09.11.21
+        </td>
+        <td>This data is entered in the Nonconformance section</td>
+        <td>This data is entered in the Nonconformance section</td>
+        <td>In the NC section user can assign another user to complete this task.  I.e. Joe Bloggs</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>5. Risk Assessment </td>
+        <td>Risk assessments have not been reviewed </td>
+        <td>12.12.21</td>
+        <td>As above </td>
+        <td>As above </td>
+        <td>As above </td>
+    </tr>
+
+
+</table>
+</body>

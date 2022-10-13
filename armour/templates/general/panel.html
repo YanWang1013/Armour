@@ -1,0 +1,399 @@
+{% extends "base-auth.html" %}
+{% load static %}
+
+{% block wrapper %}
+<div class="page-content dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            {% if request.user.company.specqgenerated %}
+            <!-- My legislation -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        My ISO <small class="v-info">ISO ver. {{ company.version }}</small>
+                        {% if newversion > 0  %}<small class="v-update">{{newversion }} overdue updates!</small>{% endif %}
+                        <div class="box-tools">
+                            {% if newversion %}
+                            <a class="btn btn-default btn-sm" href="{% url 'product-report' %}#updateVersion">
+                                <i class="fas fa-sync-alt mr-2"></i> Legal update
+                            </a>
+                            {% endif %}
+                            <a class="btn btn-default btn-sm" href="{% url 'product-report' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                {% if open %}
+                                <tr>
+                                    <td><strong class="text-primary">Open ISO Product from {{ open.started|date:'d/m/Y' }}</strong></td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{% url 'iso-standards' %}" class="btn btn-blank-primary btn-sm"><i class="far fa-edit mr-1"></i> Continue</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% for l in finshed %}
+                                <tr id="row-{{ l.id|safe }}">
+                                    <td>ISO Product from {{ l.started|date:'d/m/Y' }}</td>
+                                    <td class="nowrap text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{% url 'get-report-pdf' l.get_or_create_uuid %}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Report</a>
+                                            <a target="_blank" href="{% url 'get-report-nc-pdf' l.get_or_create_uuid 'inner' %}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> NC</a>
+                                           <!-- <button target="_blank" onclick="loadDeleteForm({{l.id|safe}});" data-toggle="modal" data-target="#actionModal" class="btn btn-blank-danger btn-sm ml-1"><i class="far fa-trash-alt mr-1"></i> Delete</button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-foot-info">
+                            <p>Showing {{ finshed|length }} of {{ finshedcount}} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Non conformance -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Non Conformances
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'additional-non-conformance' %}">
+                                <i class="far fa-edit mr-2"></i> Edit
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Number</th>
+                                    <th scope="col" class="text-right">Status</th>
+                                    <th scope="col" class="text-right">Priority</th>
+                                    <th scope="col" class="text-right">Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in nc %}
+                                <tr>
+                                    <td>NC {{ d.idx|safe }}</td>
+                                    <td class="text-right">
+                                        {% if d.ncobj.verify %}
+                                        <span class="plan-paid text-primary">
+                                            <i class="fas fa-check mr-1"></i> Completed
+                                        </span>
+                                        {%  else %}
+                                        <span class="plan-paid">
+                                            Open
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">{{ d.ncobj.get_priority_display|title }}</td>
+                                    <td class="text-right">{{d.ncobj.started|date:'d.m.Y'}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- show this if we have +5 items; 23 all items amount -->
+                        <div class="table-foot-info">
+                            <p>Showing {{ nc|length }} of {{ nccnt|safe }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Guidance -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Guidance
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'guidance-list' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <!-- show only 5 recent items -->
+                                {% for d in guidance %}
+                                <tr>
+                                    <td>{{ d.title|safe }}</td>
+                                    <td style="width:100px">{{ d.get_extention }}</td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{{ d.file.url }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- show this if we have +5 items; 23 all items amount -->
+                        <div class="table-foot-info">
+                            <p>Showing {{ guidance|length }} of {{ guidancecount }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Templates -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Templates
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'template-list' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <!-- show only 5 recent items -->
+                                {% for d in templates %}
+                                <tr>
+                                    <td>{{ d.title|safe }}</td>
+                                    <td style="width:100px">{{ d.get_extention }}</td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{{ d.file.url }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- show this if we have +5 items; 23 all items amount -->
+                        <div class="table-foot-info">
+                            <p>Showing {{ templates|length }} of {{ templatescount }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Build my register -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Build My Legal Register
+                    </h5>
+                    <div class="company-info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="img-wrapper">
+                                    <div class="logo-placeholder">
+                                        <i class="far fa-file-alt"></i>
+                                        Register builder
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="company-text">
+                                    <p><strong>You don't have any legal register yet!</strong></p>
+                                    <p>Please build it to continue using the app</p>
+                                    <p class="text-secondary"><small>Prepare yourself to answer some questions</small></p>
+                                    <hr>
+                                    <a href="{% url 'iso-standards' %}" class="btn btn-primary"><i class="fas fa-folder-open mr-3"></i> Go to My ISO</a>                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Guidance -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Guidance
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'guidance-list' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <!-- show only 5 recent items -->
+                                {% for d in guidance %}
+                                <tr>
+                                    <td>{{ d.title|safe }}</td>
+                                    <td style="width:100px">{{ d.get_extention }}</td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{{ d.file.url }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- show this if we have +5 items; 23 all items amount -->
+                        <div class="table-foot-info">
+                            <p>Showing {{ guidance|length }} of {{ guidancecount }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <!-- Company Information -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Company Information
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'organization-update' %}">
+                                <i class="far fa-edit mr-2"></i> Edit
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="company-info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="img-wrapper">
+                                    {% if company.image %}
+                                        <img src="{{ company.image.url }}" alt="Company Logo">
+                                    {% else %}
+                                        <div class="logo-placeholder">
+                                            <i class="far fa-image"></i>
+                                            Upload your logo
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="company-text">
+                                    <p><strong>{{ company.name|safe }}</strong></p>
+                                    <p>{{ company.street|safe }}</p>
+                                    <p>{{ company.zipcode|safe }} {{ company.city|safe }}, {{ company.country|safe }}</p>
+                                    <hr>
+                                    {% if company.email %}
+                                        <p><a href="mailto:{{ company.email}}" target="_blank">{{ company.email}}</a></p>
+                                    {% endif %}
+                                    {% if company.website %}
+                                        <p><a href="{{ company.website}}" target="_blank">{{ company.website}}</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if request.user.company.specqgenerated %}
+            <!-- Subscription -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Subscription
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'subscription' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    {% if company.free %}
+                    <div class="company-info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="img-wrapper">
+                                    <div class="logo-placeholder">
+                                        <i class="far fa-bell"></i>
+                                        Free trial
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="company-text">
+                                    <p><strong>You are using trial version!</strong></p>
+                                    <p>Expires on {{ request.user.company.check_free_payments_active.validate|date:'D, d M, Y' }}</p>
+                                    <p class="text-secondary"><small>Free access to 10 pieces of legislation</small></p>
+                                    <hr>
+                                    <a class="btn btn-primary" href="{% url 'cc-confirm' %}"><i class="fas fa-credit-card mr-3"></i> Subscribe to annual plan</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%  else %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col" class="text-right">Paid</th>
+                                    <th scope="col" class="text-right">Valid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%  for p in payments%}
+                                <tr>
+                                    <td>{{ p.location.name }}, {{ p.topic.name }}</td>
+                                    <td class="text-right">
+                                        {% if p.paid %}
+                                        <span class="plan-paid text-primary">
+                                            <i class="fas fa-check mr-1"></i> Yes
+                                        </span>
+                                        {% else %}
+                                        <span class="plan-paid text-danger">
+                                            <i class="fas fa-times mr-1"></i> No
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">{{ p.valid|safe }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-foot-info">
+                            <p>Showing {{ payments|length }} of {{ paymentsall }} items</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <!-- Templates -->
+            <div class="col-md-6">
+                <div class="card box">
+                    <h5 class="card-title w-tools">
+                        Templates
+                        <div class="box-tools">
+                            <a class="btn btn-default btn-sm" href="{% url 'template-list' %}">
+                                <i class="fas fa-external-link-alt mr-2"></i> See all
+                            </a>
+                        </div>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <!-- show only 5 recent items -->
+                                {% for d in templates %}
+                                <tr>
+                                    <td>{{ d.title|safe }}</td>
+                                    <td style="width:100px">{{ d.get_extention }}</td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{{ d.file.url }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- show this if we have +5 items; 23 all items amount -->
+                        <div class="table-foot-info">
+                            <p>Showing {{ templates|length }} of {{ templatescount }} items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock wrapper %}

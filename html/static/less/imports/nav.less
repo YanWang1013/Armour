@@ -1,0 +1,160 @@
+// main: ../styles.less
+
+.navbar {
+    padding: 0;
+    height: 100px;
+    background: white;
+    transition: height .3s;
+    .navbar-brand {
+        padding: 0;
+        height: 30px;
+        transition: all .3s;
+        #brand-header {
+            height: 100%;
+            width: auto;
+            transition: all .3s;
+        }
+    }
+    .navbar-toggler {
+        border-color: @brand-primary;
+        color: @brand-primary;
+        i {
+            line-height: 30px;
+        }
+    }
+    .navbar-collapse {
+        .navbar-nav {
+            .nav-item {
+                margin-left: 10px;
+                .nav-link {
+                    display: block;
+                    color: @brand-primary;
+                    font-size: 18px;
+                    height: 46px;
+                    line-height: 46px;
+                    padding: 0 20px;
+                    text-decoration: none;
+                    border-bottom: 1px solid transparent;
+                    transition: all .3s;
+                    &:hover {
+                        border-bottom: 1px solid @brand-primary;
+                    }
+                    &.active {
+                        border-bottom: 1px solid @brand-secondary;
+                    }
+                }
+                &.bordered {
+                    margin-left: 30px;
+                    .nav-link {
+                        border: 1px solid @brand-primary;
+                        border-radius: 5px;
+                        line-height: 44px;
+                        transition: all .3s;
+                        &.active {
+                            border-color: @brand-secondary;
+                        }
+                        &:hover {
+                            background: @brand-primary;
+                            border-color: @brand-primary;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.top {
+        height: 200px;
+        .navbar-brand {
+            height: 46px;
+        }
+    }
+}
+
+footer {
+    .bg-dark {
+        padding: 40px 0;
+        background: linear-gradient(to bottom, #5E6770 0%, #828C96 100%);
+        #brand-footer {
+            height: 40px;
+            width: auto;
+        }
+    }
+    .bg-light {
+        padding: 40px 0;
+        background: linear-gradient(to bottom, @brand-bg-dark 0%, @brand-bg-light 100%);
+        p {
+            color: @text-color-medium;
+        }
+        .social {
+            float: right;
+            padding: 0;
+            .social-icon {
+                display: inline-block;
+                margin-left: 20px;
+                i {
+                    color: @text-color-medium;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1199px) {
+    .navbar {
+        .navbar-collapse {
+            .navbar-nav {
+                .nav-item {
+                    margin-left: 0;
+                    &.bordered {
+                        margin-left: 20px;
+                    }
+                    .nav-link {
+                        padding: 0 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+	.navbar {
+        height: 80px !important;
+        padding: 20px 15px;
+        .navbar-brand {
+            height: 30px !important;
+        }
+        .navbar-collapse {
+            background: white;
+            margin: 0px -15px;
+            .navbar-nav {
+                padding: 20px 0;
+                .nav-item {
+                    padding: 0 15px;
+                    margin-bottom: 10px;
+                    &.bordered {
+                        margin-left: 0;
+                        margin-top: 20px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+	footer {
+        section {
+            text-align: center;
+            &.bg-light {
+                .social {
+                    float: none;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+}

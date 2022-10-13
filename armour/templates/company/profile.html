@@ -1,0 +1,59 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Profile Information{% endblock %}
+
+{% block pagetitle %}Profile Information{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'profile-update' %}" enctype="multipart/form-data">
+    {{form.media}}
+    {% csrf_token %}
+    <div class="card box">
+        <div class="row justify-content-center box-hero">
+            <div class="col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.email.label}}</label>
+                            <div class="input-group-append">
+                                {% for error in form.email.errors %}
+                                <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                {% endfor %}
+                                {{form.email}}
+                                <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.first_name.label}}</label>
+                            {% for error in form.first_name.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.first_name}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>{{form.last_name.label}}</label>
+                            {% for error in form.last_name.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{form.last_name}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <a href="{% url 'panel' %}" class="btn btn-blank btn-lg mt-3"><i class="fas fa-times mr-3"></i> Cancel</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg mt-3"><i class="fas fa-check mr-3"></i></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

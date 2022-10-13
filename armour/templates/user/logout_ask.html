@@ -1,0 +1,25 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Logout{% endblock %}
+{% block pagetitle %}Logout{% endblock %}
+
+{% block content %}
+<div class="card box">
+    <div class="row justify-content-center box-hero">
+        <div class="col-md-6 col-sm-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <h5 class="card-title text-center mb-5">Are you sure want to logout?</h5>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <a href="{% url 'panel' %}" class="btn btn-blank btn-lg"><i class="fas fa-times mr-3"></i> Cancel</a>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <a href="{% url 'logout' %}" class="btn btn-primary btn-lg"><i class="fas fa-sign-out-alt mr-3"></i></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

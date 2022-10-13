@@ -1,0 +1,307 @@
+// main: ../app_styles.less
+
+.table-responsive {
+	&.table-wrapper {
+		padding: 20px;
+		background: @brand-bg;
+		border-top: 1px solid @brand-border;
+	}
+	.table {
+		&.table-fixed {
+			table-layout: fixed;
+		}
+		&.va-top {
+			tbody, tfoot {
+				td {
+					vertical-align: top;
+					line-height: 22px;
+				}
+			}
+		}
+		thead {
+			font-size: 16px;
+			th {
+				padding: 10px;
+				border: none;
+				line-height: 21px;
+				color: @brand-primary-light;
+				font-weight: bold;
+				&:first-of-type {
+					padding-left: 0;
+				}
+				&:last-of-type {
+					padding-right: 0;
+				}
+			}
+		}
+		tbody, tfoot {
+			font-size: 14px;
+			tr {
+				&:first-of-type {
+					border-top: 1px solid white;
+				}
+			}
+			td {
+				padding: 5px 10px;
+				line-height: 30px;
+				border-top: 1px dashed rgba(0,0,0,.1);
+				color: @text-color-dark;
+				vertical-align: middle;
+				&:first-of-type {
+					padding-left: 0;
+				}
+				&:last-of-type {
+					padding-right: 0;
+				}
+				&.nowrap {
+					white-space: nowrap;
+				}
+				.form-check {
+					&:last-of-type {
+						margin-bottom: 0;
+					}
+				}
+				.row-actions {
+					text-align: right;
+					line-height: 1;
+					white-space: nowrap;
+					.btn {
+						padding: 5px 10px;
+						border: none;
+						&.btn-blank-danger:hover {
+							background: lighten(@brand-danger,50%);
+						}
+						&.btn-blank-primary:hover {
+							background: lighten(@brand-primary-light,65%);
+						}
+					}
+				}
+			}
+		}
+		&.table-isostandards {
+			thead {
+				tr {
+					th {
+						padding: 20px 15px 15px;
+						font-size: 14px;
+						color: @brand-primary-light;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+				}
+			}
+			tbody {
+				tr {
+					transition: background .5s;
+					td {
+						padding: 15px;
+						vertical-align: top;
+						border-top: 1px solid rgba(0,0,0,.4);
+						text-align: justify;
+						&:nth-child(even) {
+							background: @brand-bg-light;
+							transition: background .5s;
+						}
+						p {
+							font-size: inherit;
+							margin-bottom: 10px;
+							line-height: 1.5;
+							&:last-child {
+								margin-bottom: 0;
+							}
+						}
+						ul, ol {
+							list-style: initial;
+							padding-left: 20px;
+							margin-bottom: 10px;
+						}
+						ol {
+							list-style: decimal;
+						}
+						h5 {
+							font-size: 16px;
+							font-weight: 500;
+							color: @brand-primary;
+						}
+						textarea {
+							min-height: 70px;
+						}
+						.keyp-comply {
+							list-style: none;
+							padding: 0;
+							> li {
+								border-top: 1px dashed rgba(0,0,0,.1);
+								font-size: 16px;
+								padding: 10px 0;
+								&:first-child {
+									border-top: none;
+									padding-top: 0;
+								}
+								&:last-child {
+									padding-bottom: 0;
+								}
+							}
+						}
+						.keyp-compliant {
+							.form-wrapper {
+								display: flex;
+								margin-top: 10px;
+								padding: 10px;
+								background: @brand-bg-light;
+								transition: background .5s;
+								.form-title {
+									margin-right: 30px;
+									line-height: 30px;
+								}
+								.form-radio {
+									margin-bottom: 0;
+								}
+								.form-radio-label {
+									margin-left: 20px;
+									margin-bottom: 0;
+								}
+							}
+							.form-control {
+								margin-top: 10px;
+							}
+						}
+					}
+					&.error {
+						background: @brand-danger-bg;
+						td {
+							&:nth-child(even) {
+								background: rgba(0,0,0,.03);
+							}
+							.keyp-compliant {
+								.form-wrapper {
+									background: rgba(0,0,0,.03);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		&.table-plans {
+			margin-top: 30px;
+			thead {
+				tr {
+					th {
+						text-align: left;
+					}
+				}
+			}
+			tbody {
+				tr {
+					td {
+						text-align: left;
+						padding-top: 10px;
+						padding-bottom: 10px;
+						.plan-paid {
+							font-weight: bold;
+							i {
+								font-size: 14px;
+							}
+						}
+					}
+				}
+			}
+		}
+		.legislation-footer {
+			tr {
+				td {
+					padding: 20px 15px;
+					background: @brand-bg-primary;
+					border-top: 1px solid @brand-primary;
+					strong {
+						font-size: 16px;
+						font-weight: 600;
+						color: @brand-primary;
+					}
+					.form-wrapper {
+						display: flex;
+						.form-radio {
+							margin-right: 30px;
+							margin-bottom: 0;
+							&:last-of-type {
+								margin-right: 0;
+							}
+							.form-radio-label {
+								margin: 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&.table-reports {
+		.table {
+			margin-bottom: 20px;
+			tbody {
+				border: none;
+			}
+			tr {
+				td {
+					padding: 5px 20px;
+					border-top: none;
+					border-bottom: 1px dashed rgba(0,0,0,0.1);
+					line-height: 30px;
+					color: @text-color-medium;
+					.btn-blank-default {
+						border: none;
+						color: @text-color-medium;
+						&:hover {
+							background: white;
+						}
+					}
+				}
+				&:hover {
+					background: @brand-bg-light;
+				}
+				&.row-title {
+					background: @brand-bg;
+					td {
+						padding: 5px 0 0;
+						color: @brand-primary;
+						font-weight: bold;
+						border-bottom: 1px solid @brand-border;
+					}
+				}
+				&:first-of-type {
+					border-top: none;
+				}
+				&:last-of-type {
+					td {
+						border-bottom: none;
+					}
+				}
+			}
+		}
+	}
+	.table-foot-info {
+		p {
+			color: @text-color-light;
+			margin-bottom: 16px;
+		}
+	}
+	.pagination {
+		float: right;
+		margin: 10px 0;
+		.page-item {
+			.page-link {
+				font-size: 14px;
+				color: @text-color-medium;
+				box-shadow: none !important;
+			}
+			&.active {
+				.page-link {
+					z-index: 3;
+					background: @brand-primary;
+					color: white;
+					border-color: @brand-primary;
+				}
+			}
+		}
+	}
+}

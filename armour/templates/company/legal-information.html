@@ -1,0 +1,62 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Change Plan{% endblock %}
+
+{% block pagetitle %}Change Plan{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item" aria-current="page"><a href="{% url 'subscription' %}">Subscription</a></li>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'legal-info' %}">
+{{form.media}}
+{% csrf_token %}
+<div class="row">
+
+    <div class="col-md-6 col-sm-12">
+        <div class="card box">
+
+            <h5 class="card-title">Select topics</h5>
+                <div class="row">
+                    {% for pk, choice in form.topics.field.widget.choices %}
+                      <div class="col-md-12 col-sm-12">
+                        <div class="form-check">
+                            <input class="form-check-input" {% if pk|in_list:form.topics.value %}checked{% endif %} id="id_{{form.topics.name}}_{{ forloop.counter0 }}" name="{{form.topics.name}}" type="checkbox" value="{{pk}}" />
+                            <label class="form-check-label" for="id_{{form.topics.name}}_{{ forloop.counter0 }}">{{ choice|safe }}</label>
+                        </div>
+                      </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12">
+        <div class="card box">
+            <h5 class="card-title">Select location</h5>
+
+                <div class="row">
+                    {% for pk, choice in form.locations.field.widget.choices %}
+                      <div class="col-md-12 col-sm-12">
+                        <div class="form-check">
+                            <input class="form-check-input" {% if pk|in_list:form.locations.value %}checked{% endif %} id="id_{{form.locations.name}}_{{ forloop.counter0 }}" name="{{form.locations.name}}" type="checkbox" value="{{pk}}" />
+                            <label class="form-check-label" for="id_{{form.locations.name}}_{{ forloop.counter0 }}">{{ choice|safe }}</label>
+                        </div>
+                      </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+        <div class="card box">
+            <div class="action-btns">
+                <a  class="btn btn-blank btn-lg" href="{% url 'subscription' %}"><i class="fas fa-arrow-left mr-3"></i> Back</a>
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% load static crispy_forms_tags %}
+<div class="container">
+    <h2 class="section-title">Register <strong>Your Interest</strong></h2>
+    <h4 class="text-center">Signup for our newsletter and get notified when we publish the latest updates.</h4>
+    <form id="contact-form" method="post" action="{% url 'contact-form' %}">
+        {% csrf_token %}
+        {{form.media}}
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    {{ form.name }}
+                    <i class="far fa-user"></i>
+                    {% for error in form.name.errors %}
+                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    {{ form.email }}
+                    <i class="far fa-paper-plane"></i>
+                    {% for error in form.email.errors %}
+                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.message }}
+            {% for error in form.message.errors %}
+            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.captcha }}
+            {% for error in form.captcha.errors %}
+            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg mt-5">Submit</button>
+        </div>
+    </form>
+</div>

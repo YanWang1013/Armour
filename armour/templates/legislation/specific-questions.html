@@ -1,0 +1,130 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Register Builder{% endblock %}
+
+{% block pagetitle %}Register Builder{% endblock pagetitle %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item" aria-current="page"><a href="{% url 'product-report' %}">Reports</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Progress -->
+    <div class="col-sm-12">
+        <div class="progress-wrapper">
+            <div class="form-group">
+                <label>Select location</label>
+                <select class="form-control" name="location" id="id_location" onchange="showHideQuestions();">
+                    {% for o in data.locations %}
+                    <option value="{{ o.id|safe }}">{{ o.name|safe }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Select topic</label>
+                <select class="form-control" name="topic" id="id_topic" onchange="showHideQuestions();">
+                    {% for o in data.topics %}
+                    <option value="{{ o.id|safe }}">{{ o.name|safe }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group form-progress">
+                <label>Progress<span class="legend-overall">overall</span><span class="legend-product">product</span></label>
+                <div class="progress" id="progress-product">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="progress" id="progress-overall">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Questions -->
+    {% if data.questions|length > 0 %}
+    <div class="col-md-12 col-sm-12">
+        {% for p in data.questions %}
+        {% if p.get_questions|length > 0 %}
+        <div class="card box questionboxes" id="product-{{ p.location.id|safe }}-{{ p.topic.id|safe }}">
+            <h5 class="card-title mt-0">Specific Questions</h5>
+            {% for o in p.get_questions %}
+            <div class="question-wrapper">
+                {% if o.desc %}
+                <div class="question w-tooltip" data-toggle="tooltip" title="{{ o.desc|safe }}">
+                    {{ o.title|safe }} <i class="fas fa-info-circle"></i>
+                </div>
+                {% else %}
+                <div class="question">
+                    {{ o.title|safe }}
+                </div>
+                {% endif %}
+                <div class="form-radio">
+                    <input class="form-radio-input" id="question-yes-{{ o.id|safe }}" onclick="selectQuestion({{ o.id|safe }},1)" name="question-{{ o.id|safe }}" type="radio">
+                    <label class="form-radio-label" for="question-yes-{{ o.id|safe }}">Yes</label>
+                </div>
+                <div class="form-radio">
+                    <input class="form-radio-input" id="question-no-{{ o.id|safe }}" onclick="selectQuestion({{ o.id|safe }},0)" name="question-{{ o.id|safe }}" type="radio">
+                    <label class="form-radio-label" for="question-no-{{ o.id|safe }}">No</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="col-md-12 col-sm-12">
+        <div class="card box">
+            <div class="action-btns">
+                <a href="{% url 'organization-update' %}" class="btn btn-blank btn-lg float-left"><i class="far fa-edit mr-3"></i> Organisation Details</a>
+                <a href="{% url 'spec-questions-confirmation' %}" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i> Generate</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+<!-- Action Modal -->
+<div class="modal" id="actionModal" tabindex="-1" role="dialog"></div>
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <i class="fas fa-cog fa-spin"></i>
+                Please wait ... We are building your register.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+    var urls={setquestion:"{% url 'spec-question-set' %}",};
+    $(document).ready(function() {
+        {% for o in selected %}
+            {% if o.response %}
+                $('#question-yes-{{ o.question.id|safe }}').prop('checked', true);
+            {% else %}
+                $('#question-no-{{ o.question.id|safe }}').prop('checked', true);
+            {% endif %}
+        {% endfor %}
+    });
+</script>
+<script src="{% static 'js/spec-questions.js' %}"></script>
+{% if messages %}
+<script type="text/javascript">
+    $(document).ready(function(){
+      {% for message in messages %}
+          {% if message.tags == 'error' %}
+          handleErrors();
+          {% endif %}
+      {% endfor %}
+    });
+</script>
+{% endif %}
+{% endblock %}

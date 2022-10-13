@@ -1,0 +1,158 @@
+{% extends "user/base-login.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Registration{% endblock %}
+{% block pagetitle %}Registration{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/legislation-plan.css' %}">
+{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'login' %}">Login Page</a></li>
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+        {{ form.media }}
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 col-sm-12 plan-page">
+                <div class="card box text-center card-body item-wrapper">
+                    <h5 class="card-title">Your Selected Plan</h5>
+                    <h5 class="card-title">14-day Trial version<br> <small>Free access to 1 standard</small></h5>
+                    <div class="text-left item m-0">
+                        <ul>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div>ISO standards explained</div>
+                            </li>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div>Identify your company ISO gaps</div>
+                            </li>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div> Non conformance register <br><small>(create, track and manage
+                                    issues)</small></div>
+                            </li>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div>Build your own Management System </div>
+                            </li>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div>Templates<small>(Preview)</small></div>
+                            </li>
+                            <li class="py-2"><span class="fas fa-check"></span>
+                                <div>Reports</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="card box">
+                    <h5 class="card-title">Start a 14-day free Trial, fill your info below!</h5>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>{{ form.email.label }}</label>
+                                <div class="input-group-append">
+                                    {% for error in form.email.errors %}
+                                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                    {% endfor %}
+                                    {{ form.email }}
+                                    <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>{{ form.country.label }}</label>
+                                {% for error in form.country.errors %}
+                                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                {% endfor %}
+                                {{ form.country }}
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>{{ form.first_name.label }}</label>
+                                {% for error in form.first_name.errors %}
+                                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                {% endfor %}
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>{{ form.last_name.label }}</label>
+                                {% for error in form.last_name.errors %}
+                                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                {% endfor %}
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group password-group">
+                                <label>{{ form.password1.label }}</label>
+                                <div class="input-group-append">
+                                    {% for error in form.password1.errors %}
+                                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                    {% endfor %}
+                                    {{ form.password1 }}
+                                    <div class="input-group-text show">
+                                        <i class="fas fa-eye" title="Show password"></i>
+                                        <i class="fas fa-eye-slash" title="Hide password"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group password-group">
+                                <label>{{ form.password2.label }}</label>
+                                <div class="input-group-append">
+                                    {% for error in form.password2.errors %}
+                                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                    {% endfor %}
+                                    {{ form.password2 }}
+                                    <div class="input-group-text show">
+                                        <i class="fas fa-eye" title="Show password"></i>
+                                        <i class="fas fa-eye-slash" title="Hide password"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-check mt-3">
+                                {{ form.terms }}
+                                <label class="form-check-label" for="id_{{ form.terms.name }}">
+                                    By signing up you agree to our <a class="link-primary" target="_blank"
+                                                                      href="/terms">Terms & Conditions and Privacy
+                                    Policy</a>.
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                {{ form.captcha }}
+                                {% for error in form.captcha.errors %}
+                                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="card box">
+                    <div class="action-btns">
+                        <a href="{% url 'login' %}" class="btn btn-blank btn-lg"><i class="fas fa-times mr-3"></i>
+                            Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i></i>
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

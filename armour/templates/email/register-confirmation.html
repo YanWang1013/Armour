@@ -1,0 +1,15 @@
+{% extends "email/base.html" %}
+{% load i18n %}
+{% autoescape off %}
+
+{% block content %}
+    <h1>Activate your account</h1>
+    <p>{% trans "Please go to the following link and activate your account:" %}</p>
+    <p>
+        <a href="{{ baseurl }}{% url 'activate-account' uuid=user.uuid %}">Activation link</a>
+    </p>
+    <p>{% trans "Thanks for using our site!" %}</p>
+{% endblock %}
+
+
+{% endautoescape %}

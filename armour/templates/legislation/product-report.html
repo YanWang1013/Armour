@@ -1,0 +1,176 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}
+Reports
+{% endblock title %}
+
+{% block pagetitle %}
+Reports <small class="v-info">ISO ver. {{ object.version }}</small>
+{% endblock pagetitle %}
+
+{% block headeractions %}
+{% if newversion %}
+<a href="#updateModal" class="btn btn-primary" data-toggle="modal" data-target="#updateModal" id="updateButton">
+    <i class="fas fa-sync-alt mr-2"></i> ISO Product update <span class="count">{{ nectversions|safe }}</span>
+</a>
+{% endif %}
+{% endblock headeractions %}
+
+{% block content %}
+<!-- Reports -->
+<div class="card box">
+    <h5 class="card-title w-tools">
+        ISO Product Reports
+        <div class="box-tools">
+            <div class="form-group">
+                <label>Select year</label>
+                <select class="form-control" name="location" id="id_location" onchange="refreshData();">
+                    <option value="">2021</option>
+                </select>
+            </div>
+        </div>
+    </h5>
+    <div class="accordion" id="my-legislation">
+        {% if open_product %}
+        <div class="card ">
+            <div class="card-header">
+                <button class="btn btn-link text-primary collapsed" type="button" data-toggle="collapse" data-target="#ml-row-{{ forloop.counter }}" aria-expanded="true">
+                   Open ISO Product from {{ open_product.started|date:'d/m/Y' }} <span class="v-info">v{{ open_product.version }}</span> <span class="addon"></span>
+                </button>
+                <div class="row-actions">
+                     <a href="{% url 'iso-standards' %}" class="btn btn-blank-primary btn-sm ml-1"><i class="far fa-edit mr-1"></i> Continue</a>
+                    <button target="_blank" onclick="loadDeleteForm({{open_product.id|safe}});" data-toggle="modal" data-target="#actionModal" class="btn btn-blank-danger btn-sm ml-1"><i class="far fa-trash-alt mr-1"></i> Delete</button>
+                </div>
+            </div>
+            <div id="ml-row-{{ forloop.counter }}" class="collapse" aria-labelledby="headingOne" data-parent="#my-legislation">
+                <div class="card-body">
+                    <div class="table-responsive table-reports">
+                        <table class="table">
+                            <tbody>
+                                <tr class="row-title">
+                                    <td colspan="2">ISO GAP Analysis & Non Conformance Reports</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {% for p in open_product_standards %}
+                                        {{ p.title |title }},
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{% url 'get-report-pdf' open_product.get_or_create_uuid %}?product={{ open_product.id }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for p in finished_products %}
+        <div class="card">
+            <div class="card-header">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#ml-row-{{ forloop.counter }}" aria-expanded="true">
+                    ISO Product reports from {{ p.started|date:'d/m/Y' }} <span class="v-info">v{{ p.version }}</span> <span class="addon"></span>
+                </button>
+                <div class="row-actions">
+                    <button target="_blank" onclick="loadDeleteForm({{p.id|safe}});" data-toggle="modal" data-target="#actionModal" class="btn btn-blank-danger btn-sm ml-1"><i class="far fa-trash-alt mr-1"></i> Delete</button>
+                </div>
+            </div>
+            <div id="ml-row-{{ forloop.counter }}" class="collapse" aria-labelledby="headingOne" data-parent="#my-legislation">
+                <div class="card-body">
+                    <div class="table-responsive table-reports">
+                        <table class="table">
+                            <tbody>
+                                <tr class="row-title">
+                                    <td colspan="2">ISO GAP Analysis & Non Conformance Reports</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {% for q in p.get_iso_standards %}
+                                        {{ q.title|title }},
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="row-actions">
+                                            <a target="_blank" href="{% url 'get-report-pdf' p.get_or_create_uuid %}?product={{ p.id }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card box">
+    <h5 class="card-title">
+        Non Conformances
+    </h5>
+
+    <div class="table-responsive table-reports table-wrapper">
+        <table class="table">
+            <tbody>
+                <tr class="row-title">
+                    <td colspan="2">Other Non Conformances</td>
+                </tr>
+                {% for s in company.get_outer_sources %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td class="text-right">
+                        <div class="row-actions">
+                            <a target="_blank" href="{% url 'get-report-nc-outer-pdf' %}?source={{ s.id|safe }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">There is no data for reports yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tbody>
+                <tr class="row-title">
+                    <td colspan="2">All Non Conformances</td>
+                </tr>
+                <tr>
+                    <td>All records</td>
+                    <td class="text-right">
+                        <div class="row-actions">
+                            <a target="_blank" href="{% url 'get-report-nc-outer-pdf' %}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+{{ block.super }}
+<script src="{% static 'js/jquery.form.min.js' %}"></script>
+<script src="{% static 'js/iso-standard.js' %}"></script>
+<script type="text/javascript">
+    var urls={
+        objdelete:"{% url 'legislation-delete' 0 %}"
+    };
+
+    $(document).ready(function() {
+
+    if(window.location.href.indexOf('#updateVersion') != -1) {
+        $('#updateModal').modal('show');
+    }
+
+});
+</script>
+{% endblock %}

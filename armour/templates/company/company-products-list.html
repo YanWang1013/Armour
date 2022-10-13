@@ -1,0 +1,21 @@
+<h5 class="card-title w-b mt-0">Your current products <span class="size"><i class="fas fa-tags"></i> <span class="amount">{{ company.gen_price_pos|length }}</span></span></h5>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Valid from - to</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in company.gen_price_pos %}
+            <tr>
+                <td>{{ e.location.name|safe }} - {{ e.topic.name|safe }}</td>
+                <td>{% if e.paid %}<i class="fa fa-check"></i>{% else %}<i class="fa fa-ban"></i>{% endif %}</td>
+                <td>{{ e.valid|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,42 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block pagetitle %}Manage Users{% endblock %}
+
+{% block headeractions %}
+    <button type="button"  data-toggle="modal" data-target="#actionModal" class="btn btn-primary" onclick="loadNewForm();"><i class="fas fa-user-plus mr-3"></i> Add admin</button>
+{% endblock headeractions %}
+
+{% block content %}
+<div class="row">
+    <!-- users -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box" id="objects-list"></div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+    <!-- Action Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content" id="actionModalContent">
+            </div>
+        </div>
+    </div>
+{% endblock modal %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script type="text/javascript">
+        var urls={objlist:"{% url 'organization-admins-list' %}",
+                  objadd:"{% url 'organization-admins-add' %}",
+                  objedit:"{% url 'organization-admins-edit' 0 %}",
+                  objdelete:"{% url 'organization-admins-delete' 0 %}"
+                 };
+    </script>
+    <script src="{% static 'js/admins.js' %}"></script>
+{% endblock %}

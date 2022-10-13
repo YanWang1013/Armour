@@ -1,0 +1,25 @@
+{% extends "user/base-login.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Logout{% endblock %}
+{% block pagetitle %}Logout{% endblock %}
+
+{% block content %}
+<div class="card box">
+    <div class="row justify-content-center box-hero">
+        <div class="col-md-6 col-sm-12">
+            <div class="hero-message">
+                <i class="far fa-check-circle"></i>
+                <h2>Success</h2>
+                <p>You have successfully logged out</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card box">
+    <div class="action-btns">
+            <a href="{% url 'home' %}" class="btn btn-blank btn-lg"><i class="fas fa-home mr-3"></i> Homepage</a>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i> Login again</a>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,128 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Non Conformance Report</title>
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Source+Sans+Pro:400,600&display=swap" rel="stylesheet">
+  <!-- styles -->
+  {% include 'pdf/base_styles.html' %}
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td>
+        {% if company.image %}
+        <img class="company-logo" src="{{ company.image.path }}" alt="{{ company.name }}">
+        {% endif %}
+      </td>
+      <td class="text-right">
+        <span class="text-muted">Time Generated:</span>
+        <p>{% now "d.m.Y, H:i" %}</p>
+      </td>
+    </tr>
+  </table>
+
+  <h1>Non Conformance Report {% if mode and mode == 'inner' %}(Legal){% elif mode %}({{ mode|title }}){% endif %}</h1>
+
+  <table>
+    <tr>
+      <th class="text-left" style="width: 50%">
+        <h4>{{ company.name|safe|title }}{% if company.scope %} <small>Organisational scope:</small>{% endif %}</h4>
+      </th>
+      <th class="text-right" style="width:50%">
+        <h4> {{ user.get_fullname }}</h4>
+      </th>
+    </tr>
+    {% if company.scope %}
+    <tr>
+      <th colspan="2" class="text-left">
+        <p class="text-info">{{ company.scope|safe }}</p>
+      </th>
+    </tr>
+    {% endif %}
+  </table>
+
+  <h5>No of NCs: <strong>{{ cnt }}</strong></h5>
+
+  <h6>Non conformance & Corrective Actions</h6>
+  <table class="table-striped">
+    <tr>
+      <td class="text-color"><strong>Report Name</strong></td>
+      <td>Non conformance Register</td>
+      <td class="text-color"><strong>No of open NCs:</strong></td>
+      <td>{{ opened | length }}</td>
+    </tr>
+    <tr>
+      <td class="text-color"><strong>Reported / Printed by</strong></td>
+      <td>
+        {{ user.get_fullname }}
+      </td>
+      <td class="text-color"><strong>No of completed NCs:</strong></td>
+      <td>{{ closed | length }}</td>
+    </tr>
+  </table>
+
+  <h6>Status: Completed</h6>
+  <table class="table-striped">
+    <thead>
+      <tr>
+        <th style="width:10%">NC No.</th>
+        <th style="width:20%">Source</th>
+        <th style="width:20%">Description</th>
+        <th style="width:10%">Date raised</th>
+        <th style="width:20%">Root cause</thstyle>
+          <th style="width:20%">Corrective action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for res in closed %}
+        <tr>
+          <td>{{ res.5|default_if_none:'' }}</td>
+          <td>{{ res.0|default_if_none:'' }}</td>
+          <td>{{ res.1|default_if_none:'' }}</td>
+          <td>{{ res.2|date:"d.m.Y" }}</td>
+          <td>{{ res.3|default_if_none:'' }}</td>
+          <td>{{ res.4|default_if_none:'' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h6>Status: Opened</h6>
+    <table class="table-striped">
+      <thead>
+        <tr>
+          <th style="width:10%">NC No.</th>
+          <th style="width:20%">Source</th>
+          <th style="width:20%">Description</th>
+          <th style="width:10%">Date raised</th>
+          <th style="width:20%">Root cause</thstyle>
+            <th style="width:20%">Corrective action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for res in opened %}
+          <tr>
+            <td>{{ res.5|default_if_none:'' }}</td>
+            <td>{{ res.0|default_if_none:'' }}</td>
+            <td>{{ res.1|default_if_none:'' }}</td>
+            <td>{{ res.2|date:"d.m.Y" }}</td>
+            <td>{{ res.3|default_if_none:'' }}</td>
+            <td>{{ res.4|default_if_none:'' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <table>
+        <tr>
+          <td align="center" style="padding-top: 20px">
+            Powered by
+            <img class="logo" src="{{ staticroot }}/images/logo-main.svg" alt="Armour">
+          </td>
+        </tr>
+      </table>
+    </body>

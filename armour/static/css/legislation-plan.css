@@ -1,0 +1,92 @@
+#btn_plan_switch button {
+    border-color: #003F5B;
+}
+#btn_plan_switch button.active {
+    background-color: #003F5B;
+    color: white;
+}
+
+.plan-page .item-wrapper .yearly-only-no {
+    display: none;
+}
+
+.plan-page .item-wrapper .yearly-only {
+    display: block;
+}
+
+.plan-page .item-wrapper.monthly .yearly-only-no {
+    display: block;
+}
+
+.plan-page .item-wrapper.monthly .yearly-only {
+    display: none;
+}
+
+.btn-outline-primary {
+    color: #003F5B;
+    border-color: #003F5B;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    background-color:#003F5B ;
+    border-color: #003F5B;
+}
+.plan-page .item-wrapper .item {
+    max-width: 350px;
+    margin: 25px 20px 10px;
+    padding: 17px 10px 15px;
+
+}
+
+.plan-page .item-wrapper .recommend {
+    max-width: 360px;
+    background-color: #003F5B;
+    color: white;
+}
+
+.plan-page .item-wrapper .recommend .item {
+    color: #003F5B;
+    padding: 10px;
+    margin: 0!important;
+}
+.plan-page .item-wrapper .item ul {
+    font-size: 18px;
+    list-style: none;
+    padding: 0;
+}
+
+.plan-page .item-wrapper .item ul li {
+    padding-left: 1.5rem;
+    margin-bottom: 5px;
+    display: flex;
+    font-weight: bold;
+
+}
+
+.plan-page .item-wrapper .item ul li span {
+    margin-right: 10px;
+    font-size: 14px;
+    line-height: 25px;
+
+}
+.plan-select .item-wrapper .item ul {
+    font-size: 16px;
+    list-style: none;
+    padding: 0;
+}
+
+.plan-select .item-wrapper .item ul li {
+    padding-left: 1.5rem;
+    margin-bottom: 5px;
+    display: flex;
+    font-weight: bold;
+
+}
+
+.plan-select .item-wrapper .item ul li span {
+    margin-right: 10px;
+    font-size: 14px;
+    line-height: 25px;
+
+}

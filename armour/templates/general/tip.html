@@ -1,0 +1,64 @@
+{% extends "base-auth.html" %}
+{% load static %}
+{% load general_tags %}
+
+{% block title %}
+    {{ tip.name }}
+{% endblock title %}
+
+{% block pagetitle %}
+    {{ tip.name }}
+{% endblock pagetitle %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'tips-list' %}">FAQs</a></li>
+{% endblock breadcrumb %}
+{% block content %}
+
+<!-- tip details -->
+<div class="row">
+    <!-- details -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box">
+            <div class="row justify-content-center box-hero">
+                <div class="col-md-6 col-sm-12">
+                    <div class="hero-message">
+                        <i class="far fa-lightbulb"></i>
+                        <h2>{{ tip.name }}</h2>
+                        {% if tip.avatar %}
+                        <div class="img-wrapper mt-5 mb-5">
+                            <img src="{{ tip.avatar.url }}" alt="{{ tip.name }}">
+                        </div>
+                        {% endif %}
+                        {% autoescape off %}
+                        <div class="static-content mt-5">
+                            {{ tip.content }}
+                        </div>
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12">
+        <div class="card box">
+            <div class="action-btns">
+                <a href="{% url 'tips-list' %}" class="btn btn-blank btn-lg float-left"><i class="far fa-lightbulb mr-3"></i> Show All </a>
+                {% prev_next_tip tip.pk as prev_next %}
+                {% if prev_next.previous == tip.pk %}
+                    <a href="{% url 'tip-details' pk=prev_next.previous %}" class="btn btn-blank btn-lg disabled"><i class="fas fa-arrow-left mr-3"></i> Previous </a>
+                {% else %}
+                    <a href="{% url 'tip-details' pk=prev_next.previous %}" class="btn btn-blank btn-lg"><i class="fas fa-arrow-left mr-3"></i> Previous </a>
+                {% endif %}
+
+                {% if prev_next.next == tip.pk %}
+                    <a href="{% url 'tip-details' pk=prev_next.next %}" class="btn btn-blank btn-lg disabled"><i class="fas fa-arrow-right mr-3"></i> Next </a>
+                {% else %}
+                    <a href="{% url 'tip-details' pk=prev_next.next %}" class="btn btn-blank btn-lg"><i class="fas fa-arrow-right mr-3"></i> Next </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,82 @@
+{% extends "user/base-login.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Login{% endblock %}
+{% block pagetitle %}Login{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'login' %}">
+<input type="hidden" name="next" value="{{ next }}">
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <div class="card box">
+                {{form.media}}
+                {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <div class="input-group-append">
+                                {{ form.username }}
+                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                            </div>
+
+                            {% for error in form.username.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group password-group">
+                            <label>Password</label>
+                            <div class="input-group-append">
+                                {{ form.password }}
+                                <div class="input-group-text show">
+                                    <i class="fas fa-eye" title="Show password"></i>
+                                    <i class="fas fa-eye-slash" title="Hide password"></i>
+                                </div>
+                            </div>
+
+                            {% for error in form.password.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="card box d-flex">
+            <h5 class="card-title">Register and start your free trial!</h5>
+            <p class="flex-grow-1">You don't have account yet? You can sign in now!</p>
+
+            <div class="d-flex">
+                {% if REGISTARTION_VIEW %}
+                    <a href="{% url 'register' %}" class="btn btn-blank btn-lg mb-3 w-100"><i class="fas fa-clipboard mr-3"></i> Register Account</a>
+                {% else %}
+                    <button type="button" class="btn btn-blank btn-lg mb-3 w-100"><i class="fas fa-clipboard mr-3"></i> Register Account</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card box">
+            <div class="action-btns">
+                <a href="{% url 'home' %}" class="btn btn-blank btn-lg float-left"><i class="fas fa-home mr-3"></i> Homepage</a>
+                <a href="{% url 'reset-password' %}" class="btn btn-blank btn-lg"><i class="fas fa-lock mr-3"></i> Forgot password</a>
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i> Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock content %}

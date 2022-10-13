@@ -1,0 +1,134 @@
+// main: ../styles.less
+
+/* site structure */
+
+html, body {
+	background: white;
+	height: 100%;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 1.4;
+    padding-top: 200px;
+    color: @brand-primary;
+}
+
+main {
+    overflow: hidden;
+}
+
+h1, h2, h3 {
+    font-family: 'Oswald', sans-serif;
+}
+
+h4 {
+    font-size: 20px;
+    letter-spacing: 1px;
+    strong {
+        font-size: 32px;
+    }
+}
+
+p {
+    font-size: 14px;
+}
+
+strong {
+    font-weight: bold;
+}
+
+section {
+    padding: 80px 0;
+    .section-title {
+        font-size: 36px;
+        font-weight: 400;
+        color: @brand-primary;
+        text-align: center;
+        margin-bottom: 80px;
+        strong {
+            font-weight: 600;
+        }
+    }
+    &.bg-dark {
+        background: linear-gradient(to bottom, @brand-primary 0%, @brand-primary-light 100%);
+        color: white;
+        .section-title {
+            color: white;
+            font-weight: 300;
+            strong {
+                font-weight: 400;
+            }
+        }
+    }
+    &.bg-light {
+        background: linear-gradient(to bottom, @brand-bg-dark 0%, @brand-bg-light 100%);
+    }
+    &.hero {
+        background: url(../images/background_mask.png);
+        background-position: center center;
+        background-size: cover;
+        padding: 0;
+        img {
+            position: absolute;
+            top: 0;
+            right: -20%;
+            height: 115%;
+            width: auto;
+            z-index: 2;
+        }
+        .hero-content {
+            position: relative;
+            display: inline-block;
+            padding: 140px 0;
+            z-index: 3;
+            h1 {
+                font-size: 84px;
+                color: @brand-primary;
+            }
+            a {
+                float: right;
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1199px) {
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 991px) {
+	body {
+		padding-top: 80px;
+	}
+	section.hero {
+		.hero-content {
+			padding: 100px 0;
+			h1 {
+				font-size: 60px;
+			}
+		}
+	}
+}
+
+@media (max-width: 767px) {
+	section.hero {
+		img {
+			display: none;
+		}
+		.hero-content {
+			h1 {
+				font-size: 48px;
+			}
+			a {
+				float: none;
+			}
+		}
+	}
+}

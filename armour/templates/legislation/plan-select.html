@@ -1,0 +1,126 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}ISO Product Builder{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/legislation-plan.css' %}">
+{% endblock %}
+
+{% block pagetitle %}ISO Product Builder <small>Select Plan</small>{% endblock %}
+
+{% block content %}
+
+<div class="card box">
+    <div class="row box-hero plan-select">
+        <div class="col-md-12">
+            <div class="hero-message">
+                <h2>Subscription</h2>
+                <p class="text-secondary">Subscribe to our annual plan or test for free!</p>
+                <p>Both plans include full access to Covid-19 Legislation, Guidance and Templates. Stay safe!</p>
+                <p>Documents & guidance feature is free indefinitely!</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            {% if request.user.company.get_free_payments_count == 0 %}
+            <a href="{% url 'organization-start-free' %}" class="card plan-picker mr-0">
+            {% elif request.user.company.check_free_payments_isactive %}
+            <a href="{% url 'iso-standards' %}" class="card plan-picker mr-0">
+            {% endif %}
+                <div class="item-wrapper card-body">
+                    {% if request.user.company.get_free_payments_count == 0 %}
+                    <h5 class="card-title">14-day Free Trial <small>Free access to 1 Standard</small></h5>
+                    {% elif request.user.company.check_free_payments_isactive %}
+                    <h5 class="card-title">Continue trial <small>Free access to 1 Standard</small></h5>
+                    {% else %}
+                    <h5 class="card-title">Trial <small>Finished</small></h5>
+                    {% endif %}
+                    <div class="text-left item">
+                        <ul>
+                            <li><span class="fas fa-check"></span>
+                                <div>ISO standards explained</div>
+                            </li>
+                            <li><span class="fas fa-check"></span>
+                                <div>Identify your company ISO gaps</div>
+                            </li>
+                            <li><span class="fas fa-check"></span>
+                                <div> Non conformance & action register <br><small>(create, track and manage
+                                    issues)</small></div>
+                            </li>
+                            <li><span class="fas fa-check"></span>
+                                <div>Build your own Management System and conduct remote audits</div>
+                            </li>
+                            <li><span class="fas fa-check"></span>
+                                <div>Templates<small>(Access all the templates needed to build your own management
+                                    system)</small></div>
+                            </li>
+                            <li><span class="fas fa-check"></span>
+                                <div>Reports</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% if request.user.company.get_free_payments_count == 0 %}
+                    Expires after 14 days
+                    {% elif request.user.company.check_free_payments_isactive %}
+                    Expires on {{ request.user.company.check_free_payments_active.validate|date:'D, d M, Y' }}
+                    {% else %}
+                    Expired
+                    {% endif %}
+                </div>
+            {% if request.user.company.get_free_payments_count == 0 %}
+            </a>
+            {% elif request.user.company.check_free_payments_isactive %}
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <a href="{% url 'cc-confirm' %}" class="card plan-picker ml-0">
+                <div class="item-wrapper card-body">
+                    <h5 class="card-title">Full Access <small>All legislation and other requirements</small></h5>
+                    <div class="text-left item">
+                        <ul>
+                            <li>
+                                <span class="fas fa-check"></span>
+                                <div>
+                                    <strong>Non Conformance Register:</strong> record compliance issues incidents-complaints-supplier issues-audits-inspections
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fas fa-check"></span>
+                                <div>
+                                    <strong>Reports</strong>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fas fa-check"></span>
+                                <div>
+                                    <strong>Templates & Guidance</strong>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fas fa-check"></span>
+                                <div>
+                                    <strong>Legal Updates</strong>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fas fa-check"></span>
+                                <div>
+                                    <strong>Other requirements:</strong> ISO 45001, Safe T Cert, ISO 9001, ISO 14001 and more
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    Annual subscription
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

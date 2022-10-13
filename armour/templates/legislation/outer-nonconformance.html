@@ -1,0 +1,99 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}Non Conformances{% endblock %}
+{% block pagetitle %}Non Conformances{% endblock %}
+
+
+{% block content %}
+<!-- filters -->
+<div class="progress-wrapper">
+  <div class="form-group add-nc">
+    <button type="button" class="btn btn-primary" onclick="AddView();"><i class="fas fa-plus mr-3"></i> Add NC</button>
+  </div>
+  <div class="form-group">
+    <label>Status</label>
+    <select class="form-control" name="status" id="id_status" onchange="filterStatus()">
+      <option value="all">All</option>
+      <option value="open">Open</option>
+      <option value="completed">Completed</option>
+    </select>
+  </div>
+  <div class="form-group d-none">
+    <label>Priority</label>
+    <select class="form-control" name="topic" id="id_priority" onchange="filterPriority()">
+      <option value="any">Any</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+  <div class="form-group legend-group">
+    <label>Legend</label>
+    <div class="legend-wrapper">
+      <div class="legend-item"><i class="fas fa-check"></i> Completed</div>
+      <div class="legend-item"><i class="far fa-dot-circle"></i> Priority: Low</div>
+      <div class="legend-item"><i class="far fa-dot-circle text-secondary-light"></i> Priority: Medium</div>
+      <div class="legend-item"><i class="far fa-dot-circle text-danger"></i> Priority: High</div>
+    </div>
+  </div>
+</div>
+
+<!-- Non conformance & corrective action -->
+<div id="tabs-content">
+  {% include 'legislation/outer-nc-content.html' %}
+</div>
+
+<div class="card box">
+  <div class="action-btns w-pagination">
+    <div class="page-pagination pagination-nc">
+      <button class="btn btn-blank" type="button" onclick="prevView()" title="Previous NC"><i class="fas fa-chevron-left"></i></button>
+      <div class="page-current"><span id="curr-page">{{ inittab }}</span> NC</div>
+      <button class="btn btn-blank" onclick="nextView()" title="Next NC"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+<!-- Action Modal -->
+<div class="modal" id="actionModal" tabindex="-1" role="dialog"></div>
+{% endblock modal %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<script src="{% static 'js/moment.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/jquery.form.min.js' %}"></script>
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'js/additional-nonconf.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker({
+      format: 'dd.mm.yyyy',
+    });
+
+    $.each($(".non-form"), function(){
+      $(this).ajaxForm({success:ActionFormSuccess,error:ActionFormError});
+    });
+  });
+
+  const ps = new PerfectScrollbar('#v-pills-tab', {
+    suppressScrollX: true,
+    wheelSpeed: 2,
+    wheelPropagation: false,
+    minScrollbarLength: 20
+  });
+
+  {%  if nc_open %}
+  $( "a[idx='{{ nc_open }}']" ).click();
+  {%  endif %}
+</script>
+{% endblock %}

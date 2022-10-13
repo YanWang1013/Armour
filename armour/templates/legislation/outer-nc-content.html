@@ -1,0 +1,178 @@
+{% load crispy_forms_tags static company_tags %}
+
+<input type="hidden" id="curr-tab" value="{{ inittab }}"/>
+<div class="card box-tabs">
+  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    {% for n in nonconformance %}
+    <a onclick="setView({{ forloop.counter }})" class="nav-link {% if forloop.counter == inittab %}active{% endif %}" id="v-pills-{{ n.nctype }}-{{ forloop.counter }}-tab" data-toggle="pill" href="#v-pills-{{ forloop.counter }}" role="tab" aria-controls="v-pills-{{ forloop.counter }}" aria-selected="true"
+    data-status="{% if n.verify %}completed{% else %}open{% endif %}" data-priority="{{n.priority}}" idx = "{{ n.nctype }}-{{ n.id|safe }}">
+    NC <span class="tab-counter">{{ n.no }}</span>
+    <small>{{n.started|date:'d.m.Y'}}</small>
+    <span class="status">
+      <i id="verify{{ n.nctype }}-{{ n.id|safe }}" class="fas fa-check"></i>
+      <i class="far fa-dot-circle"></i>
+    </span>
+  </a>
+  {% endfor %}
+</div>
+<div class="tab-content" id="v-pills-tabContent">
+  {% for n in nonconformance %}
+  <div class="tab-pane fade show {% if forloop.counter == inittab %}active{% endif %}" id="v-pills-{{ forloop.counter }}" role="tabpanel" aria-labelledby="v-pills-{{ forloop.counter }}-tab">
+    <form method="post" action="{%  if n.nctype == 'outer' %}{% url 'additional-non-conformance-set' n.id %}{% elif n.nctype == 'inner' %}{% url 'non-conformance-set' n.id %}{% endif %}" id="form-{{ forloop.counter }}" class="non-form">
+      <input type="hidden" name="form-tab" value="{{ forloop.counter }}"/>
+      {% if not notnew %}
+      <input type="hidden" id="add-new-{{ forloop.counter }}" name="add-new" value="0" class="add-new"/>
+      {% endif %}
+      <h4 class="card-title">NC {{ forloop.counter }} <small class="text-muted ml-2">Date {{n.started|date:'d.m.Y'}}</small></h4>
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <div class="form-group">
+            <label>Source of NC</label>
+            <select class="form-control" name="source" required>
+              {%  if n.nctype == 'outer' %}
+              {% for s in sources %}
+              <option value="{{ s.id|safe }}" {% if n.source and n.source.id == s.id or not n.source and forloop.counter == 1 %}selected{% endif %}>{{ s.name }}</option>
+              {% endfor %}
+              {%  else %}
+              {% for s in sourceslegal %}
+              <option value="{{ s.id|safe }}" {% if n.source and n.source.id == s.id or not n.source and forloop.counter == 1 %}selected{% endif %}>{{ s.name }}</option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Identified by </label>
+            <select class="form-control" name="identified">
+              <option value=""></option>
+              {% for s in company.companyusers.all %}
+              <option value="{{ s.id|safe }}" {% if n.identified_by and n.identified_by.id == s.id or not n.identified_by and s.id == request.user.id %}selected{% endif %}>{{ s.get_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+          {%  if n.nctype == 'outer' %}
+          <div class="form-group">
+            <label>Non Conformance Description</label>
+            <textarea class="form-control" name="description">{{ n.description|default_if_none:''|safe }}</textarea>
+          </div>
+          {% else %}
+          <div class="form-group">
+            <label>Non Conformance Description</label>
+            <div class="form-info">
+              <p>
+                <strong>ISO standard</strong>
+                - {{ n.issrepsonse.isostandard.title|safe }}
+              </p>
+              <p>
+                <strong>Key point</strong>
+                - {{ n.point |safe }}
+              </p>
+            </div>
+            <textarea class="form-control" name="description">{{ n.ncdesc|safe }}</textarea>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" name="priority">
+              <option value="low" {% if n.priority == "low" %}selected{% endif %}>Low</option>
+              <option value="medium" {% if n.priority == "medium" %}selected{% endif %}>Medium</option>
+              <option value="high" {% if n.priority == "high" %}selected{% endif %}>High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Assigned to</label>
+            <select class="form-control" name="assign">
+              <option value=""></option>
+              {% for s in company.companyusers.all %}
+              <option value="{{ s.id|safe }}" {% if n.assign and n.assign.id == s.id%}selected{% endif %}>{{ s.get_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"><i class="fas fa-arrow-circle-down"></i></div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Root cause</label>
+            <textarea class="form-control" name="root">{{ n.root|default_if_none:''|safe }}</textarea>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Actions to be taken</label>
+            <textarea class="form-control" name="corrective">{{ n.corrective|default_if_none:''|safe }}</textarea>
+          </div>
+        </div>
+
+        <div class="divider"><i class="fas fa-arrow-circle-down"></i></div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Completed by</label>
+            <select class="form-control" name="completed_by">
+              <option value=""></option>
+              {% for s in company.companyusers.all %}
+              <option value="{{ s.id|safe }}"  {% if n.completed_by and n.completed_by.id == s.id%}selected{% endif %}>{{ s.get_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Completion date</label>
+            <input class="form-control datepicker" name="completeddate" type="text" value="{{ n.completeddate|date:"d.m.Y" |default_if_none:''|safe }}"></input>
+          </div>
+        </div>
+
+        <div class="divider"><i class="fas fa-arrow-circle-down"></i></div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Reviewed by</label>
+            <select class="form-control" name="reviewed_by">
+              <option value=""></option>
+              {% for s in company.companyusers.all %}
+              <option value="{{ s.id|safe }}" {% if n.reviewed_by and n.reviewed_by.id == s.id%}selected{% endif %}>{{ s.get_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Review date</label>
+            <input class="form-control datepicker" name="reviewed" type="text" value="{{ n.revieweddate|date:"d.m.Y" |default_if_none:''|safe }}"></input>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="text-right mt-4">
+            <button type="button" onclick="submitForm()" class="btn btn-primary btn-lg"><i class="fas fa-check mr-3"></i> Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.each($(".non-form"), function(){
+      $(this).ajaxForm({success:ActionFormSuccess,error:ActionFormError});
+    });
+
+  });
+</script>

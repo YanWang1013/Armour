@@ -1,0 +1,44 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static %}
+
+{% block menu %}{% endblock %}
+
+{% block wrapper %}
+<div class="login-content">
+    <div class="container">
+        <div class="logo text-center mb-5">
+                <img height="100" src="{% static 'images/armour_color.svg' %}" alt="Armour">
+        </div>
+        <header class="clearfix">
+            {% block header %}
+                <h1 class="page-title">{% block pagetitle %}{% endblock %}</h1>
+                <ul class="breadcrumb">{% block breadcrumb %}{% endblock %}</ul>
+            {% endblock %}
+        </header>
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <ul class="social">
+            <li class="brand-icon">
+                <object id="brand-footer" type="image/svg+xml" data="{% static 'images/armour_gold.svg' %}">
+                    <img src="{% static 'images/armour_gold.svg' %}" alt="Armour">
+                </object>
+            </li>
+            <li class="social-icon">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+            </li>
+            <li class="social-icon">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </li>
+            <li class="social-icon">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </li>
+        </ul>
+        <p>Copyright © {% now "Y" %} by Armour (Global) Ltd. All rights reserved.</p>
+    </div>
+</footer>
+{% endblock %}

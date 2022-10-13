@@ -1,0 +1,5 @@
+From: {{data.email|safe}}
+Name: {{data.name|safe}}
+
+Message:
+{{data.message|safe}}

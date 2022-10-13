@@ -1,0 +1,75 @@
+{% load static %}
+<form action="{% if add %}{%  url 'employee-add' %}{%  else %}{%  url 'employee-edit' object.pk %}{% endif %}" method="post" id="action-form">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal-header">
+        <h5 class="modal-title">Add employee</h5>
+        <button type="button" id="action-close" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ form.fname.label }}</label>
+                        <div class="input-group-append">
+                            {% for error in form.fname.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{ form.fname }}
+                            <div class="input-group-text"><i class="fas fa-user"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ form.lname.label }}</label>
+                        <div class="input-group-append">
+                            {% for error in form.lname.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{ form.lname }}
+                            <div class="input-group-text"><i class="fas fa-user"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ form.email.label }}</label>
+                        <div class="input-group-append">
+                            {% for error in form.email.errors %}
+                            <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                            {% endfor %}
+                            {{ form.email }}
+                            <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ form.position.label }}</label>
+                        {% for error in form.position.errors %}
+                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                        {% endfor %}
+                        {{ form.position }}
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ form.status.label }}</label>
+                        {% for error in form.status.errors %}
+                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                        {% endfor %}
+                        {{ form.status }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-blank" data-dismiss="modal"><i class="fas fa-times mr-3"></i> Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-3"></i> Save</button>
+    </div>
+</form>

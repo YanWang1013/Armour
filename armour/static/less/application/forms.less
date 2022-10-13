@@ -1,0 +1,371 @@
+// main: ../app_styles.less
+
+.form-control {
+	font-size: 16px;
+	padding: 10px 15px;
+	background: white;
+	border: 1px solid @brand-border;
+	border-radius: 5px;
+	color: @brand-primary;
+	box-shadow: none !important;
+	transition: all .3s;
+	&.datepicker {
+		padding: 10px 15px;
+	}
+	&:hover {
+		border-color: @brand-primary;
+	}
+	&:focus {
+		border-color: @brand-primary;
+		background: @brand-bg-primary;
+	}
+	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	  color: @text-color-medium;
+	}
+	&::-moz-placeholder { /* Firefox 19+ */
+	  color: @text-color-medium;
+	}
+	&:-ms-input-placeholder { /* IE 10+ */
+	  color: @text-color-medium;
+	}
+	&:-moz-placeholder { /* Firefox 18- */
+	  color: @text-color-medium;
+	}
+}
+
+.form-actions {
+	margin: 20px 0;
+	text-align: right;
+	.btn {
+		margin-left: 10px;
+		&.float-left {
+			margin-left: 0;
+			margin-right: 10px;
+		}
+	}
+}
+
+.form-group {
+	margin-bottom: 15px;
+	label {
+		padding: 0;
+		margin-bottom: 10px;
+		font-size: 14px;
+		line-height: 20px;
+		color: @text-color-light;
+	}
+	textarea {
+		min-height: 142px;
+	}
+	.form-text {
+		margin-top: 10px;
+	}
+	.form-info {
+		margin-bottom: 10px;
+	}
+	.form-control {
+		height: 48px;
+	}
+	.input-group-append {
+		position: relative;
+		margin-left: 0;
+		.form-control {
+			padding-right: 50px;
+		}
+		.input-group-text {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 0;
+			width: 50px;
+			background: none;
+			border: none;
+			color: @brand-border;
+			transition: color .3s;
+			i {
+				margin: 0 auto;
+				color: inherit;
+				font-size: 22px;
+				line-height: 48px;
+			}
+		}
+		.form-control:focus ~ .input-group-text {
+			color: @brand-primary;
+		}
+		&.file {
+			position: relative;
+			font-size: 14px;
+			height: 48px;
+			padding: 10px 50px 10px 16px;
+			background: white;
+			border: 1px solid @brand-border;
+			border-radius: 5px;
+			color: @brand-primary;
+			box-shadow: none !important;
+			transition: all .3s;
+			&:hover {
+				border-color: @brand-primary;
+			}
+			&:focus {
+				border-color: @brand-primary;
+				background: @brand-bg-primary;
+			}
+			.custom-file-upload {
+				cursor: pointer;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				padding: 0;
+				margin: 0;
+				opacity: 0;
+				z-index: 2;
+			}
+			.file-upload {
+				input[type="checkbox"] {
+					margin-left: 10px;
+					vertical-align: middle;
+				}
+			}
+		}
+		& ~ .file-info {
+			margin: 5px 0 0;
+			color: @text-color-medium;
+			line-height: 20px;
+			a {
+				display: inline-block;
+			    white-space: nowrap;
+			    max-width: 140px;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    vertical-align: bottom;
+			}
+			.file-delete {
+				float: right;
+				label {
+					margin: 0;
+					padding: 0 0 0 3px;
+					font-size: 12px;
+					color: @brand-danger;
+					vertical-align: text-bottom;
+				}
+			}
+		}
+	}
+	&.password-group {
+		.input-group-text {
+			cursor: pointer;
+			.fa-eye {
+				display: none;
+			}
+			&.show {
+				.fa-eye {
+					display: block;
+				}
+				.fa-eye-slash {
+					display: none;
+				}
+			}
+		}
+	}
+	&.legend-group {
+		margin-left: auto;
+		.legend-wrapper {
+			display: flex;
+		    height: 40px;
+		    padding: 5px 0;
+			line-height: 30px;
+			.legend-item {
+				margin: 0 10px;
+				font-size: 12px;
+				&:first-of-type {
+					margin-left: 0;
+				}
+				&:last-of-type {
+					margin-right: 0;
+				}
+				i {
+					font-size: 14px;
+					margin-right: 5px;
+					vertical-align: middle;
+					&.fa-dot-circle {
+						color: lighten(@brand-primary-light,20%);
+					}
+				}
+			}
+		}
+	}
+}
+
+.check-group {
+	margin-bottom: 20px;
+}
+
+// checkbox
+.form-check {
+	position: relative;
+	margin-bottom: 15px;
+	padding: 0;
+	.form-check-input {
+		position: absolute;
+    top: 9px;
+    left: 5px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+	}
+	.form-check-label {
+		cursor: pointer;
+		line-height: 16px;
+		padding: 3px 0;
+		font-size: 14px;
+		color: @text-color-medium;
+		padding-left: 30px;
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: block;
+			border: 2px solid @brand-primary;
+			width: 22px;
+			height: 22px;
+			vertical-align: top;
+			border-radius: 3px;
+			margin-right: 15px;
+			transition: all .3s;
+		}
+		&:after {
+			content: url(../images/icons/checkbox.svg);
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: block;
+			width: 12px;
+			height: auto;
+			line-height: 22px;
+			position: absolute;
+			top: 2px;
+			left: 5px;
+			transform: scale(.0);
+			opacity: 0;
+			transition: all .3s;
+		}
+	}
+	.form-check-input:checked ~ .form-check-label {
+		&:before {
+			content: "";
+			background: @brand-primary;
+		}
+		&:after {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+	.form-check-input:disabled ~ .form-check-label {
+		cursor: default;
+		opacity: .5;
+	}
+}
+
+// checkbox
+.form-radio {
+	position: relative;
+	margin-bottom: 15px;
+	padding: 0;
+	.form-radio-input {
+		position: absolute;
+		display: none;
+		margin: 0;
+		visibility: hidden;
+	}
+	.form-radio-label {
+		cursor: pointer;
+		line-height: 22px;
+		padding: 0;
+		font-size: 14px;
+		color: @text-color-medium;
+		&:before {
+			content: "";
+			display: inline-block;
+			border: 2px solid @brand-primary;
+			width: 22px;
+			height: 22px;
+			vertical-align: top;
+			border-radius: 50%;
+			margin-right: 15px;
+			box-shadow: inset 0 0 0 8px transparent;
+			transition: all .3s;
+		}
+	}
+	.form-radio-input:checked ~ .form-radio-label {
+		&:before {
+			content: "";
+			background: @brand-primary;
+			box-shadow: inset 0 0 0 3px white;
+		}
+	}
+	.form-radio-input:disabled ~ .form-check-label {
+		cursor: default;
+		opacity: .5;
+	}
+}
+
+//datepicker
+
+.datepicker {
+	padding: 10px;
+	box-shadow: 0 5px 15px rgba(0,0,0,.1);
+	.table-condensed {
+		color: @text-color-medium;
+		td, th {
+			padding: 0;
+			width: 30px;
+			height: 30px;
+			border-radius: 2px;
+			vertical-align: middle;
+		}
+		thead {
+			.prev, .next, .switch {
+				&:hover {
+					background: @brand-bg;
+				}
+			}
+			.dow {
+				color: @brand-primary;
+			}
+			.icon-arrow-right {
+				.fa-font;
+				font-size: 14px;
+				&:before {
+					content: "\f054";
+				}
+			}
+			.icon-arrow-left {
+				.fa-font;
+				font-size: 14px;
+				&:before {
+					content: "\f053";
+				}
+			}
+		}
+		tbody {
+			.day, .month, .year {
+				&:hover {
+					background: @brand-bg;
+				}
+				&.old, &.new {
+					color: @text-color-light;
+				}
+				&.active {
+					background: @brand-primary-light;
+					color: white;
+					&:hover {
+						background: @brand-primary-light;
+					}
+				}
+			}
+		}
+	}
+}

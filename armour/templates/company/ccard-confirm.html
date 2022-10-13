@@ -1,0 +1,88 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Payment{% endblock %}
+
+{% block pagetitle %}Payment{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item" aria-current="page"><a href="{% url 'subscription' %}">Subscription</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="card box">
+    <div class="row justify-content-center box-hero">
+        <div class="col-md-6 col-sm-12">
+            <div class="hero-message">
+                <i class="far fa-check-circle text-secondary"></i>
+                <h2>Status</h2>
+                {% if company.gen_price <= 0 %}
+                <p class="price-info mt-4">All your products are paid.</p>
+                {% else %}
+                 <p class="price-info">Your price is <strong data-toggle="tooltip" data-html="true" title="<div class='price-details'><span>Net:</span> {{price|floatformat:2}} {{company.currency}} <hr/><span>Discount:</span> {{discount|floatformat:2}} {{company.currency}} <hr/><span>Subtotal:</span> {{subtotal|floatformat:2}} {{company.currency}} <hr/> <span>VAT:</span> {{tax|floatformat:2}} {{company.currency}} <hr/> <span>Total:</span> {{total|floatformat:2}} {{company.currency}}</div>">{{total|floatformat:2}} {{company.currency}}  <i class="fas fa-info-circle"></i></strong> per year.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card box">
+    <div class="action-btns">
+        <form method="post" action="{% url 'cc-confirm' %}">
+            {% csrf_token %}
+            <a href="{% url 'cc-update' %}" class="btn btn-blank btn-lg float-left"><i class="far fa-edit mr-3"></i> Edit Credit Card</a>
+            <button type="button" class="btn btn-blank btn-lg float-left" data-toggle="modal" data-target="#add-discount"><i class="fas fa-percent mr-3"></i> Discount</button>
+            {% if company.check_valid_payment %}
+            <a  class="btn btn-blank btn-lg" href="{% url 'iso-standards' %}"><i class="fas fa-angle-double-right mr-3"></i> Continue Your Access</a>
+            {% endif %}
+            {% if price > 0 %}
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-credit-card mr-3"></i> Pay</button>
+            {% endif %}
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+<!-- Modal Add Discount -->
+<div class="modal fade" id="add-discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form method="post" action="{% url 'discount-set' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="cc-confirm" />
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Discount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="discount-code" class="sr-only">Code</label>
+                    <input type="text" class="form-control" name="discount-code" placeholder="Code" required {% if code %}value="{{ code }}{% endif %}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blank" data-dismiss="modal"><i class="fas fa-times mr-2"></i> Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fas mr-2 {% if code %}fa-trash{% else  %}fa-plus{% endif %}"></i> {% if code %}Remove{% else  %}Add{% endif %}</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip({
+            container: 'body',
+            placement: 'top',
+            boundary: 'viewport'
+        })
+    });
+</script>
+{% endblock %}

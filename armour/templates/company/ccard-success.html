@@ -1,0 +1,26 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static %}
+
+{% block title %}Payment success{% endblock %}
+
+{% block pagetitle %}Payment success{% endblock %}
+
+{% block content %}
+
+<div class="card box">
+  <div class="row justify-content-center box-hero">
+      <div class="col-md-6 col-sm-12">
+          <div class="hero-message">
+              <i class="far fa-check-circle text-secondary"></i>
+              <h2>Payment success</h2> {% if object.stripe_invoice_pdf %}<a href="{{ object.stripe_invoice_pdf }}" target="_blank" class="btn btn-blank-default btn-sm">Download Invoice</a>{%  endif %}
+          </div>
+      </div>
+  </div>
+</div>
+<div class="card box">
+    <div class="action-btns">
+        <a href="{% url 'iso-standards' %}" class="btn btn-blank btn-lg"><i class="fas fa-arrow-right mr-3"></i> Next Step</a>
+    </div>
+</div>
+
+{% endblock content %}

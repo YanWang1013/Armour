@@ -1,0 +1,49 @@
+// main: ../styles.less
+
+.form-control {
+	background: @brand-bg-light;
+	border: 1px solid @brand-border;
+	color: @brand-primary;
+	&:focus {
+		border-color: @brand-border;
+		box-shadow: 0 0 0 0.2rem rgba(0, 63, 91, .1);
+	}
+
+	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	  color: @brand-primary;
+	}
+	&::-moz-placeholder { /* Firefox 19+ */
+	  color: @brand-primary;
+	}
+	&:-ms-input-placeholder { /* IE 10+ */
+	  color: @brand-primary;
+	}
+	&:-moz-placeholder { /* Firefox 18- */
+	  color: @brand-primary;
+	}
+	&.icon-right {
+		padding-right: 50px;
+	}
+	&.icon-right ~ i {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 50px;
+		line-height: 46px;
+	    text-align: center;
+	    font-size: 22px;
+		color: @brand-border;
+	}
+}
+
+#contact-section {
+	h4 {
+		margin: 0 auto;
+		max-width: 400px;
+	}
+	#contact-form {
+		margin: 40px auto 0 auto;
+		width: 100%;
+		max-width: 620px;
+	}
+}

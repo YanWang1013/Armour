@@ -1,0 +1,32 @@
+{% load static i18n %}
+
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-brand">
+            <object id="brand-header" type="image/svg+xml" data="{% static 'images/armour_color.svg' %}">
+               <img src="{% static 'images/armour_color.svg' %}" alt="Armour">
+            </object>
+        </div>
+        <button class="sidebar-toggle" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+        <div class="nav-menu">
+            <!--
+            <div class="navbar-search">
+                <input type="search" class="form-control" placeholder="Search ..."><button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            -->
+            <div class="dropdown user-menu">
+                <button class="dropdown-toggle" type="button" id="user-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i> {{user.get_fullname|safe}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="user-menu">
+                    <a class="dropdown-item" href="{% url 'profile-update' %}"><i class="fas fa-user"></i> Profile Update</a>
+                    <a class="dropdown-item" href="{% url 'change-password' %}"><i class="fas fa-unlock-alt"></i> Change Password</a>
+                    {% if request.user.company and request.user.company.active %}
+                    <a class="dropdown-item" href="{% url 'cc-update' %}"><i class="far fa-credit-card"></i> Payment and Billing</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="{% url 'logout-ask' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

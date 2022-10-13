@@ -1,0 +1,134 @@
+{% load bleach_tags company_tags %}
+{% for iss in isostandards %}
+<div class="card box isostandards" id="tab-{{ forloop.counter}}" data-iss = "{{ iss.id|safe }}">
+    <h5 class="card-title mb-0">
+        {{ forloop.counter }}. {% if iss.topic %}{{ iss.title }}{% else %}{{ iss.name }}{% endif %}
+        <button type="button" {% if not iss.description %}disabled{% endif %} class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#modal-{{ forloop.counter}}">
+            Find out more
+        </button>
+        <button type="button" class="btn btn-danger btn-sm float-right mr-5" id="btn_burger">
+            Burger more
+        </button>
+        <button type="button" class="btn btn-success btn-sm float-right mr-5" id="btn_detail">
+            Detail more
+        </button>
+    </h5>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-{{ forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{% if iss.topic %}{{ iss.title }}{% else %}{{ iss.name }}{% endif %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="rich-text">
+                        {{ iss.description|bleach }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Detail more table -->
+    <div id="Detail_more" class="table-responsive">
+        <table class="table table-fixed table-isostandards">
+            <thead>
+                <tr>
+                    <th scope="col">Requirements</th>
+                    <th scope="col">How to meet the requirements</th>
+                    <th scope="col">Evidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if iss.get_keypoints %}
+                {% for keyp in iss.get_keypoints.all %}
+                <tr class="keyp-wrapper">
+                    <td>
+                        <h5><b>{{ keyp.title|bleach }}</b></h5>
+                        <h5>{{ keyp.point|bleach  }}</h5>
+                    </td>
+                    <td>
+                        <ul class="keyp-comply">
+                            {% for opt in keyp.keypoint_comply.all %}
+                            <li>{{ opt.title|bleach }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                     <td>
+                        <textarea class="form-control" onchange="selectResponse({{ keyp.id|safe }});" id="note-{{ keyp.id|safe }}" rows="2" cols="60" placeholder="Note"></textarea>
+                        <div class="keyp-compliant">
+                            <div class="form-wrapper">
+                                <div class="form-title">
+                                    Compliant:
+                                </div>
+                                <div class="form-radio">
+                                    <input onchange="selectResponse({{ keyp.id|safe }});" class="form-radio-input" id="repl-1-{{ keyp.id|safe }}" name="repl-{{ keyp.id|safe }}" type="radio" value="1">
+                                    <label class="form-radio-label" for="repl-1-{{ keyp.id|safe }}">Yes</label>
+                                </div>
+                                <div class="form-radio">
+                                    <input onchange="selectResponse({{ keyp.id|safe }});" class="form-radio-input" id="repl-0-{{ keyp.id|safe }}" name="repl-{{ keyp.id|safe }}" type="radio" value="0">
+                                    <label class="form-radio-label" for="repl-0-{{ keyp.id|safe }}">No</label>
+                                </div>
+                            </div>
+                            <textarea style="display: none" onchange="selectResponse({{ keyp.id|safe }});" class="form-control" id="nc-{{ keyp.id|safe }}" rows="2" cols="60" placeholder="NC description"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+    <!-- Burger more table -->
+    <div id="Burger_more" class="table-responsive">
+        <table class="table table-fixed table-isostandards">
+            <thead>
+                <tr>
+                    <th scope="col">Requirements Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if iss.get_keypoints %}
+                {% for keyp in iss.get_keypoints.all %}
+                <tr class="keyp-wrapper">
+                    <td>
+                        <h5><b>{{ keyp.title|bleach }}</b></h5>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endfor %}
+
+{% if answers|length > 0 %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        {% for reply in answers %}
+        {% if reply.response > 0 %}$('#repl-1-{{ reply.point.id|safe }}').prop('checked', true);$('#nc-{{ reply.point.id|safe }}').hide();{% else %}$('#repl-0-{{ reply.point.id|safe }}').prop('checked', true);$('#nc-{{ reply.point.id|safe }}').show();{% endif %}
+        {% if reply.note %}$('#note-{{ reply.point.id|safe }}').val('{{ reply.note|repr_string|safe}}');{% endif %}
+        {% if reply.ncnote %}$('#nc-{{ reply.point.id|safe }}').val('{{ reply.ncnote|repr_string|safe }}');{% endif %}
+        {% endfor %}
+        {% if position %}$('#curr-tab').val({{ position|safe }});$('#curr-tab').change();{% endif %}
+
+        //burger();
+
+    });
+</script>
+{% endif %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        burger(1);
+    })
+</script>

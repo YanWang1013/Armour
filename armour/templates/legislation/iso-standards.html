@@ -1,0 +1,126 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}ISO Product{% endblock %}
+{% block pagetitle %}ISO Product{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item" aria-current="page"><a href="{% url 'product-report' %}">Reports</a></li>
+<li class="breadcrumb-item" aria-current="page"><a href="{% url 'management-system-view' %}">Document Management System</a></li>
+{% endblock %}
+
+{% block modal %}
+<!-- Action Modal -->
+<div class="modal" id="actionModal" tabindex="-1" role="dialog"></div>
+{% endblock modal %}
+
+{% block content %}
+<div class="row">
+    <!-- Progress -->
+    <div class="col-sm-12">
+        <div class="progress-wrapper">
+{#      <div class="form-group">#}
+{#        <label>Select location</label>#}
+{#        <select class="form-control" name="location" id="id_location" onchange="refreshData();">#}
+{#          {% for o in data.locations %}#}
+{#          <option value="{{ o.id|safe }}">{{ o.name|safe }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label>Select topic</label>#}
+{#        <select class="form-control" name="topic" id="id_topic" onchange="refreshData();">#}
+{#          {% for o in data.topics %}#}
+{#          <option value="{{ o.id|safe }}">{{ o.name|safe }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#      </div>#}
+            <div class="form-group form-progress">
+                <label>Progress<span class="legend-overall">overall</span><span class="legend-product">product</span></label>
+                <div class="progress" id="progress-product">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="progress" id="progress-overall">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination  -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box mb-2">
+            <div class="action-btns w-pagination-top">
+                <div>
+                    <a href="{% url 'management-system-view' %}" class="btn btn-blank"><i class="fas fa-arrow-up"></i> Upload Document</a>
+                    <a href="{% url 'template-list' %}" class="btn btn-blank"><i class="fas fa-arrow-down"></i> Download Template</a>
+                </div>
+                <div class="page-pagination pagination-leg">
+                    <button class="btn btn-blank" type="button" onclick="prevView()" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-current">
+                        <input class="form-control curr-tab" type="number" onchange="setView(this);" id="curr-tab" value="1">
+                        <span class="lg-counter">/ {{ isostandards|length }}</span>
+                    </div>
+                    <button class="btn btn-blank" onclick="nextView()" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <a href="{% url 'non-conformance' %}" class="btn btn-primary" title="Finish Legislation Register">Finish <i class="fas fa-arrow-right ml-3"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="col-sm-12" id="page-nav-wrapper">
+        <div class="card box mb-2">
+            <div class="page-status">
+                <div class="page-nav">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legislation page -->
+    <div class="col-md-12 col-sm-12" id ="leg-content"></div>
+
+    <!-- Pagination  -->
+    <div class="col-md-12 col-sm-12">
+        <div class="card box">
+            <div class="action-btns w-pagination">
+                <div>
+                    <a href="{% url 'management-system-view' %}" class="btn btn-blank btn-lg"><i class="fas fa-arrow-up"></i> Upload Document</a>
+                    <a href="{% url 'template-list' %}" class="btn btn-blank btn-lg"><i class="fas fa-arrow-down"></i> Download Template</a>
+                </div>
+                <div class="page-pagination pagination-leg">
+                    <button class="btn btn-blank" type="button" onclick="prevView()" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-current">
+                        <input class="form-control curr-tab" type="number" onchange="setView(this);" value="1">
+                        <span class="lg-counter">/ {{ isostandards|length }}</span>
+                    </div>
+                    <button class="btn btn-blank" onclick="nextView()" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <a href="{% url 'non-conformance' %}" class="btn btn-primary btn-lg" title="Finish Legislation Register">Finish <i class="fas fa-arrow-right ml-3"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+  let urls={datacontent:"{% url 'iso-standards-content' %}",
+  dataset:"{% url 'iso-standards-set' %}",};
+</script>
+<script src="{% static 'js/iso-product.js' %}"></script>
+{% if messages %}
+<script type="text/javascript">
+    $(document).ready(function(){
+      {% for message in messages %}
+          {% if message.tags == 'error' %}
+          setTimeout(function(){ handleErrors(); }, 500);
+          {% endif %}
+      {% endfor %}
+    });
+</script>
+{% endif %}
+{% endblock %}

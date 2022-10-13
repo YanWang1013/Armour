@@ -1,0 +1,33 @@
+<h5 class="card-title w-b mt-0">All employees <span class="size"><i class="fas fa-user-friends"></i> <span class="amount">{{ company.employee.count }}</span></span></h5>
+<div class="form-actions">
+    <button type="button"  data-toggle="modal" data-target="#actionModal" class="btn btn-blank" onclick="loadNewEmployeeForm();"><i class="fas fa-user-plus mr-3"></i> Add employee</button>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Position</th>
+                <th scope="col">Status</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in company.employee.all %}
+            <tr>
+                <td>{{ e.fname|safe }} {{ e.lname|safe }}</td>
+                <td>{{ e.position|safe }}</td>
+                <td>{{ e.status|safe }}</td>
+                <td>{{ e.email|safe }}</td>
+                <td>
+                    <div class="row-actions">
+                        <button class="btn btn-blank-default btn-sm ml-1" type="button" data-toggle="modal" data-target="#actionModal" onclick="loadEditEmployeeForm({{ e.id|safe }});"><i class="far fa-edit mr-1"></i> Edit</button>
+                        <button class="btn btn-blank-danger btn-sm ml-1" type="button" data-toggle="modal" data-target="#actionModal" onclick="loadDeleteEmployeeForm({{ e.id|safe }});"><i class="far fa-trash-alt mr-1"></i> Delete</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

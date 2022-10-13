@@ -1,0 +1,49 @@
+{% extends "base-auth.html" %}
+{% load crispy_forms_tags static company_tags %}
+
+{% block title %}
+   Guidance
+{% endblock title %}
+
+{% block pagetitle %}
+    Guidance
+{% endblock pagetitle %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block modal %}
+    <!-- Action Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content" id="actionModalContent">
+             </div>
+        </div>
+    </div>
+{% endblock modal %}
+
+{% block content %}
+
+
+<div class="card box">
+    <h5 class="card-title">Guidance</h5>
+    <div class="table-responsive">
+        <table class="table">
+            <tbody>
+                {% for d in docs %}
+                <tr>
+                    <td>{{ d.title|safe }}</td>
+                    <td style="width:100px">{{ d.get_extention }}</td>
+                    <td class="text-right">
+                        <div class="row-actions">
+                            <a target="_blank" href="{{ d.file.url }}" class="btn btn-blank-default btn-sm"><i class="far fa-file-alt mr-1"></i> Download</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
+

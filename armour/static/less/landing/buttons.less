@@ -1,0 +1,45 @@
+// main: ../styles.less
+
+.btn {
+	&.btn-primary {
+		background: @brand-primary;
+		border-color: @brand-primary;
+		&:hover, &:focus {
+			background: @brand-primary-light !important;
+			border-color: @brand-primary-light !important;
+		}
+	}
+	&.btn-secondary {
+		color: @brand-primary;
+		background: @brand-secondary;
+		border-color: @brand-secondary;
+		&:hover, &:focus {
+			background: @brand-secondary-dark !important;
+			border-color: @brand-secondary-dark !important;
+			color: white;
+		}
+		&:focus {
+			box-shadow: 0 0 0 0.2rem rgba(248, 204, 55, .5) !important;
+		}
+	}
+	&.btn-outline-light {
+		color: white;
+		&:hover, &:focus {
+			background: white;
+			color: @brand-primary;
+		}
+	}
+	&.btn-lg {
+		font-size: 24px;
+		padding: 12px 20px;
+	}
+	&.btn-xl {
+		font-size: 32px;
+		letter-spacing: 1px;
+		font-weight: 300;
+		padding: 15px 40px;
+	}
+	&.btn-round {
+		border-radius: 50px;
+	}
+}

@@ -1,0 +1,112 @@
+// main: ../app_styles.less
+button {
+	outline: none !important;
+}
+.btn {
+	transition: all .3s;
+	padding: 10px 20px;
+	text-transform: capitalize;
+	outline: !important;
+	box-shadow: none !important;
+	&.btn-primary {
+		background: @brand-primary;
+		border-color: @brand-primary;
+		&:hover, &:focus {
+			background: @brand-primary-light !important;
+			border-color: @brand-primary-light !important;
+		}
+	}
+	&.btn-secondary {
+		color: @brand-primary;
+		background: @brand-secondary;
+		border-color: @brand-secondary;
+		&:hover, &:focus {
+			background: @brand-secondary-dark !important;
+			border-color: @brand-secondary-dark !important;
+			color: white;
+		}
+		&:focus {
+			box-shadow: 0 0 0 0.2rem rgba(248, 204, 55, .5) !important;
+		}
+	}
+	&.btn-default {
+		color: @brand-primary;
+		background: @brand-bg-light;
+		border-color: transparent;
+		&:hover, &:focus {
+			background: white;
+		}
+	}
+	&.btn-white {
+		color: @brand-primary;
+		background: white;
+		border-color: @brand-border;
+		&:hover, &:focus {
+
+		}
+	}
+	&.btn-blank {
+		background: none;
+		color: @brand-primary;
+		border-color: @brand-border;
+		&:hover, &:focus {
+			background: @brand-bg-primary;
+			border-color: @brand-bg-primary;
+		}
+	}
+	&.btn-blank-default {
+		background: none;
+		color: @text-color-light;
+		border-color: @brand-bg-light;
+		&:hover, &:focus {
+			background: @brand-bg-light;
+			color: @text-color-dark;
+			border-color: @brand-bg-light;
+		}
+
+	}
+	&.btn-blank-danger {
+		background: none;
+		color: lighten(@brand-danger,30%);
+		border-color: @brand-border;
+		&:hover, &:focus {
+			color: @brand-danger;
+			background: @brand-bg;
+			border-color: @brand-border;
+		}
+
+	}
+	&.btn-blank-primary {
+		background: none;
+		color: lighten(@brand-primary-light,30%);
+		border-color: @brand-border;
+		&:hover, &:focus {
+			color: @brand-primary-light;
+			background: @brand-bg;
+			border-color: @brand-border;
+		}
+	}
+	&.btn-sm {
+		font-size: 14px;
+		padding: 5px 20px;
+		line-height: 20px;
+	}
+	&.btn-lg {
+		font-size: 18px;
+	    padding: 20px 25px;
+	    line-height: 24px;
+	}
+	&.btn-xl {
+		font-size: 32px;
+		letter-spacing: 1px;
+		font-weight: 300;
+		padding: 15px 40px;
+	}
+	&.btn-round {
+		border-radius: 50px;
+	}
+}
+
+.link-primary {
+	color: @brand-primary-light;
+}

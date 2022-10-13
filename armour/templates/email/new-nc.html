@@ -1,0 +1,15 @@
+{% extends "email/base.html" %}
+{% load i18n %}
+{% autoescape off %}
+
+{% block content %}
+    <h1>A new NC has been assigned to you</h1>
+    <p>{% trans "Please go to the following link and check:" %}</p>
+    <p>
+        <a href="{{ baseurl }}{% url 'additional-non-conformance' %}?nc-open={{ nc.nctype }}-{{ nc.id|safe }}">NC link</a>
+    </p>
+    <p>{% trans "Thanks for using our site!" %}</p>
+{% endblock %}
+
+
+{% endautoescape %}
